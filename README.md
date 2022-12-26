@@ -1,40 +1,280 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Flutter View Controller
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+Um estilo de arquitetura reativo que visa isolar a o comportamento dos componentes de sua vizualização. Focado no reaproveitamento,
+e composição recursiva de componentes.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+## Começando
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
-```dart
-const like = 'sample';
+### Adicioando é a dependencia
+No projeto:
+```yaml
+dependencies:
+  flutter_view_controller: ^0.0.1
+```
+Por comando:
+```
+flutter pub add flutter_view_controller
 ```
 
-## Additional information
+###Criando um componente
+Para cada componente crie dois arquivos. Um de controle e um de visualização.
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
-# flutter_view_controller
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class MyController extends Controller {
+  @override
+  onInit(){}
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class MyView extends View<MyController> {
+  MyView({required MyController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+```
+
+
+
+### Utilizando o componente
+```dart
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: MyComponentView(controller: MyComponentController())
+    );
+  }
+```
+
+
+## Utilizando componentes em Hierarquia
+
+
+### Componente Pai
+
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class ParentController extends Controller {
+  ChildController child = ChildController();
+
+  @override
+  onInit(){}
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class ParentView extends View<ParentController> {
+  ParentView({required ParentController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ChildView(controller: controller.child)
+    );
+  }
+}
+```
+
+
+### Componente Filho
+
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class ChildController extends Controller {
+  @override
+  onInit(){}
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class ChildView extends View<ChildController> {
+  ChildView({required ChildController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+```
+
+
+
+## Atualizando a view de forma reativa usando a classe Notifier
+
+
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class MyController extends Controller {
+
+  Notifier<bool> isLoading = Notifier(true);
+
+  @override
+  onInit(){
+    ....someCode
+    isLoading.value = false;
+  }
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class MyView extends View<MyController> {
+  MyView({required MyController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return controller.isLoading.show((isLoading)=>
+      isLoading ? 
+      Center(child: CircularProgressIndicator()):
+      Text("Page has been loaded!")
+    );
+  }
+}
+```
+
+
+
+
+## Comunicação entre controllers usando a classe Plug
+
+### Button
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class ButtonController extends Controller {
+
+  Notifier<bool> isSelected = Notifier(false);
+
+  Plug onClick = Plug();
+
+  @override
+  onInit(){}
+
+  click(){
+    onClick();
+  }
+
+  select(){
+    isSelected.value = true;
+  }
+
+  unselect(){
+    isSelected.value = false;
+  }
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class ButtonView extends View<ButtonController> {
+  MyView({required ButtonController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: controller.click,
+      child: Container(
+        child: controller.isSelected.show((isSelected)=> Text(isSelected ? "Selected": "Unselected"))
+      )
+    )
+  }
+}
+```
+
+
+### Button
+controller.dart
+```dart
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
+class PageController extends Controller {
+  ButtonController button1 = ButtonController();
+  ButtonController button2 = ButtonController();
+
+  @override
+  onInit(){
+    button1.onClick.then(()=> selectButton(button1));
+    button2.onClick.then(()=> selectButton(button2));
+  }
+
+  _selectButton(ButtonController button){
+    button1.unselect();
+    button2.unselect();
+    button.select();
+  }
+
+  @override
+  onClose(){}
+}
+```
+
+view.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'controller.dart';
+
+class ButtonView extends View<ButtonController> {
+  MyView({required ButtonController controller}) : super(controller: controller);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children:[
+      ButtonView(controller: controller.button1),
+      ButtonView(controller: controller.button2),
+    ])
+  }
+}
+```
+
