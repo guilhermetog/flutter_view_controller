@@ -1,22 +1,13 @@
 # Flutter View Controller
 
+![Logo] ('./assets/logo.png')
+
 Um estilo de arquitetura reativo que visa isolar a o comportamento dos componentes de sua vizualização. Focado no reaproveitamento,
 e composição recursiva de componentes.
 
-## Começando
 
-### Adicioando é a dependencia
-No projeto:
-```yaml
-dependencies:
-  flutter_view_controller: ^0.0.1
-```
-Por comando:
-```
-flutter pub add flutter_view_controller
-```
+### Criando um componente
 
-###Criando um componente
 Para cada componente crie dois arquivos. Um de controle e um de visualização.
 
 controller.dart

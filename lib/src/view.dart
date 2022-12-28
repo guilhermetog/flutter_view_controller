@@ -8,11 +8,11 @@ abstract class View<T extends Controller> extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return ViewState<T>();
+    return _ViewState<T>();
   }
 }
 
-class ViewState<T extends Controller> extends State<View<T>> {
+class _ViewState<T extends Controller> extends State<View<T>> {
   late T controller;
 
   @override
@@ -31,6 +31,7 @@ class ViewState<T extends Controller> extends State<View<T>> {
   @override
   Widget build(BuildContext context) {
     return controller._refresh.show(() {
+      controller.context = context;
       return widget.build(context);
     });
   }
@@ -38,6 +39,7 @@ class ViewState<T extends Controller> extends State<View<T>> {
 
 abstract class Controller {
   final NotifierTicker _refresh = NotifierTicker();
+  BuildContext? context;
 
   onInit();
   onClose();
