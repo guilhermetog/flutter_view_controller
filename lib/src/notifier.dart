@@ -39,6 +39,10 @@ class Notifier<T> {
     _callbacks.add(callback);
   }
 
+  connect(Notifier<T> connector) {
+    _connectors.add(connector);
+  }
+
   dispose() {
     _callbacks.clear();
     _connectors.clear();
