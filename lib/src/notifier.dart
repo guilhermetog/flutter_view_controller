@@ -1,113 +1,140 @@
 import 'package:flutter/material.dart';
 
 class Notifier<T> {
-  late ValueNotifier<T> notifier;
-  List<Function> callbacks = [];
+  late ValueNotifier<T> _notifier;
+  final List<Function> _callbacks = [];
+  final List<Notifier<T>> _connectors = [];
+
   bool disposed = false;
 
-  T get value => notifier.value;
+  T get value => _notifier.value;
+
   set value(T value) {
     if (disposed) {
-      notifier = ValueNotifier(value);
+      _notifier = ValueNotifier(value);
       disposed = false;
     }
-    notifier.value = value;
-    for (var callback in callbacks) {
-      callback(notifier.value);
+    _notifier.value = value;
+    for (var callback in _callbacks) {
+      callback(_notifier.value);
+    }
+
+    for (var connector in _connectors) {
+      connector.value = value;
     }
   }
 
   Notifier(T value) {
-    notifier = ValueNotifier(value);
+    _notifier = ValueNotifier(value);
   }
 
   Widget show(Function(T) builder) {
     return ValueListenableBuilder<T>(
-      valueListenable: notifier,
+      valueListenable: _notifier,
       builder: (_, value, __) => builder(value),
     );
   }
 
   listen(Function(T) callback) {
-    callbacks.add(callback);
+    _callbacks.add(callback);
   }
 
   dispose() {
-    callbacks = [];
-    notifier.dispose();
+    _callbacks.clear();
+    _connectors.clear();
+    _notifier.dispose();
     disposed = true;
   }
 }
 
 class NotifierList<T> {
-  late ValueNotifier<List<T>> notifier = ValueNotifier([]);
-  List<Function> callbacks = [];
+  late final ValueNotifier<List<T>> _notifier = ValueNotifier([]);
+  final List<Function> _callbacks = [];
+  final List<NotifierList<T>> _connectors = [];
 
-  get length => notifier.value.length;
+  get length => _notifier.value.length;
 
-  List<T> get value => notifier.value;
+  List<T> get value => _notifier.value;
   set value(List<T> value) {
-    notifier.value = value.toList();
-    for (var callback in callbacks) {
-      callback(notifier.value);
+    _notifier.value = value.toList();
+    for (var callback in _callbacks) {
+      callback(_notifier.value);
+    }
+
+    for (var connector in _connectors) {
+      connector.value = value;
     }
   }
 
   Widget show(Function(List<T>) builder) {
     return ValueListenableBuilder<List<T>>(
-      valueListenable: notifier,
+      valueListenable: _notifier,
       builder: (_, value, __) => builder(value),
     );
   }
 
   add(T object) {
-    notifier.value = [...(notifier.value)..add(object)];
+    _notifier.value = [...(_notifier.value)..add(object)];
   }
 
   remove(T object) {
-    final list = [...(notifier.value)..remove(object)];
-    notifier.value = list;
+    final list = [...(_notifier.value)..remove(object)];
+    _notifier.value = list;
   }
 
   clear() {
-    notifier.value = [];
+    _notifier.value = [];
   }
 
   listen(Function(List<T>) callback) {
-    callbacks.add(callback);
+    _callbacks.add(callback);
+  }
+
+  connect(NotifierList<T> connector) {
+    _connectors.add(connector);
   }
 
   dispose() {
-    callbacks = [];
-    notifier.dispose();
-    notifier = ValueNotifier<List<T>>([]);
+    _callbacks.clear();
+    _connectors.clear();
+    _notifier.dispose();
   }
 }
 
 class NotifierTicker {
-  ValueNotifier<bool> notifier = ValueNotifier(false);
-  List<Function> callbacks = [];
+  final ValueNotifier<bool> _notifier = ValueNotifier(false);
+  final List<Function> _callbacks = [];
+  final List<NotifierTicker> _connectors = [];
 
   tick() {
-    notifier.value = !notifier.value;
-    for (var callback in callbacks) {
-      callback(notifier.value);
+    _notifier.value = !_notifier.value;
+
+    for (var callback in _callbacks) {
+      callback();
+    }
+
+    for (var connector in _connectors) {
+      connector.tick();
     }
   }
 
   listen(Function(List) callback) {
-    callbacks.add(callback);
+    _callbacks.add(callback);
+  }
+
+  connect(NotifierTicker connector) {
+    _connectors.add(connector);
   }
 
   Widget show(Function builder) {
     return ValueListenableBuilder<bool>(
-      valueListenable: notifier,
+      valueListenable: _notifier,
       builder: (_, value, __) => builder(),
     );
   }
 
   dispose() {
-    callbacks = [];
-    notifier.dispose();
+    _callbacks.clear();
+    _notifier.dispose();
   }
 }
