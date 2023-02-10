@@ -1,6 +1,6 @@
 # Flutter View Controller
 
-![Logo](assets/logo.png)
+![Logo](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logo.png)
 
 Um estilo de arquitetura reativo que visa isolar a o comportamento dos componentes de sua vizualização. Focado no reaproveitamento,
 e composição recursiva de componentes.
