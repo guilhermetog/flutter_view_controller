@@ -1,10 +1,10 @@
 name: flutter_view_controller
 description: Pacote para construção de projetos flutter com padrão reativo.
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/guilhermetog/flutter_view_controller
 
 environment:
-  sdk: ">=2.17.1 <3.0.0"
+  sdk: ">=2.18.6 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:

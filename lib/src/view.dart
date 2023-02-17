@@ -19,7 +19,12 @@ class _ViewState<T extends Controller> extends State<View<T>> {
   initState() {
     super.initState();
     controller = widget.controller;
-    controller.onInit();
+    if (!controller._isInitialized) {
+      controller.onInit();
+      controller._isInitialized = true;
+    } else {
+      controller.onUpdate();
+    }
   }
 
   @override
@@ -38,10 +43,12 @@ class _ViewState<T extends Controller> extends State<View<T>> {
 }
 
 abstract class Controller {
+  bool _isInitialized = false;
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
 
   onInit();
+  onUpdate() {}
   onClose();
 
   _dispose() {
