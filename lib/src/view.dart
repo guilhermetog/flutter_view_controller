@@ -3,7 +3,7 @@ import 'notifier.dart';
 
 abstract class View<T extends Controller> extends StatefulWidget {
   final T controller;
-  View({required this.controller}) : super(key: UniqueKey());
+  View({required this.controller}) : super(key: controller.key);
   Widget build(BuildContext context);
 
   @override
@@ -43,6 +43,7 @@ class _ViewState<T extends Controller> extends State<View<T>> {
 }
 
 abstract class Controller {
+  GlobalKey key = GlobalKey();
   bool _isInitialized = false;
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
