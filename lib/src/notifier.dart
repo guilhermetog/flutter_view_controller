@@ -4,6 +4,7 @@ class Notifier<T> {
   late ValueNotifier<T> _notifier;
   final List<Function> _callbacks = [];
   final List<Notifier<T>> _connectors = [];
+  final List<NotifierTicker> _tickers = [];
 
   bool disposed = false;
 
@@ -21,6 +22,10 @@ class Notifier<T> {
 
     for (var connector in _connectors) {
       connector.value = value;
+    }
+
+    for (var ticker in _tickers) {
+      ticker.tick();
     }
   }
 
@@ -41,6 +46,10 @@ class Notifier<T> {
 
   connect(Notifier<T> connector) {
     _connectors.add(connector);
+  }
+
+  connectTicker(NotifierTicker ticker) {
+    _tickers.add(ticker);
   }
 
   dispose() {
