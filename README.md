@@ -4,24 +4,11 @@ A StateManagement Flutter Framework that builds together view e controller.
 The premisse is to use OOP composition to build a stable comunication between components.
 
 There is a video where I explain how it works
-[![Intro Video] 
-(https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/video_intro.png)]
-(https://www.youtube.com/watch?v=SbK5sb_Oinc "Intro Video")
-
-
-# CONTENT
-
-[Hierarchy](#hierarchy)
-[View](#view)
-[Controller](#controller)
-[Plug](#hierarchy)
-[Notifier](#hierarchy)
-[Theme](#theme)
-[ScreenSize](#screensize)
+https://www.youtube.com/watch?v=SbK5sb_Oinc
 
 
 
-![Hierarchy](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/hierarchy.png){#hierarchy}
+![Hierarchy](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/hierarchy.png)
 
 The lib works better with a composition.
 The controller is composed of child controllers. These are passed as arguments for the correspondents child views.
@@ -54,15 +41,12 @@ class AppView extends View<AppController> {
 ```
 
 Here is another video explaining how the component hierarchy can be designed
-![Hierarchy Video](https://www.youtube.com/watch?v=3dWHU4ptYx0)
-[![Hierarchy Video] 
-(https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/video_hierarchy.png)]
-(https://www.youtube.com/watch?v=3dWHU4ptYx0 "Hierarchy Video")
+https://www.youtube.com/watch?v=3dWHU4ptYx0
 
 
 
 
-![View](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/view.png){#view}
+![View](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/view.png)
 
 The view part is responsable for build the layout.
 Every view is static as default. 
@@ -90,7 +74,7 @@ class ExampleView extends View<ExampleController> {
 ```
 
 
-![Controller](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/controller.png){#controller}
+![Controller](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/controller.png)
 
 The Controller class is responsable for the behavior of the view.
 It contains all actions and atributes of the view.
@@ -118,7 +102,7 @@ class ExampleController extends Controller {
 }
 ```
 
-![Plug](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/plug.png){#plug}
+![Plug](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/plug.png)
 
 Best way to think in Plug is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
@@ -214,7 +198,7 @@ class ParentController extends Controller {
 ```
 
 
-![Notifier](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/notifier.png){#notifier}
+![Notifier](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/notifier.png)
 
 Notifiers are fundamental to the state management in a flutter view controller component.
 They are responsable for notify the view about some property change.
@@ -436,7 +420,7 @@ NotifierTicker is used in the in the built-in method 'update' that all controlle
 It is used to refresh all the page controlled by it.
 
 
-![Theme](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/theme.png){#theme}
+![Theme](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/theme.png)
 
 With Flutter View Controller you can develop dynamic themes easely with a GlobalState.
 
@@ -573,7 +557,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-![ScreenSize](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/screensize.png){#screensize}
+![ScreenSize](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/screensize.png)
 
 As a way to simplify the calculation of sizes to build the widgets, Flutter View Controller comes with a built-in propertie
 in it's views.
