@@ -16,7 +16,7 @@ class GlobalState<T> {
 }
 
 abstract class View<T extends Controller> extends StatefulWidget {
-  late final ScreenSize size;
+  final ScreenSize size = ScreenSize();
   final T controller;
   View({required this.controller}) : super(key: controller.key);
   Widget build(BuildContext context);
@@ -29,10 +29,10 @@ abstract class View<T extends Controller> extends StatefulWidget {
 
 class _ViewState<T extends Controller> extends State<View<T>> {
   late T controller;
+  bool contextInitialized = false;
 
   @override
   initState() {
-    super.initState();
     controller = widget.controller;
     if (!controller._isInitialized) {
       controller.onInit();
@@ -40,6 +40,15 @@ class _ViewState<T extends Controller> extends State<View<T>> {
       GlobalState._connect(controller._refresh);
     } else {
       controller.onUpdate();
+    }
+    super.initState();
+  }
+
+  _initializeContext(BuildContext context) {
+    if (!contextInitialized) {
+      widget.size.setContext(context);
+      controller.context = context;
+      contextInitialized = true;
     }
   }
 
@@ -51,9 +60,8 @@ class _ViewState<T extends Controller> extends State<View<T>> {
 
   @override
   Widget build(BuildContext context) {
-    widget.size = ScreenSize(context);
+    _initializeContext(context);
     return controller._refresh.show(() {
-      controller.context = context;
       return widget.build(context);
     });
   }

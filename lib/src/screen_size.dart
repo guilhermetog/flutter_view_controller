@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
 class ScreenSize {
-  static ScreenSize? _instance;
+  static final ScreenSize _instance = ScreenSize._();
+  ScreenSize._();
 
-  ScreenSize._(BuildContext context) {
-    MediaQueryData media = MediaQuery.of(context);
-    _heightUnit = (media.size.height - (media.padding.top * 2)) / 100;
-    _widthUnit = media.size.width / 100;
-  }
-
-  factory ScreenSize(BuildContext context) {
-    _instance ??= ScreenSize._(context);
-    return _instance!;
-  }
+  factory ScreenSize() => _instance;
 
   double _heightUnit = 0;
   double _widthUnit = 0;
+
+  setContext(BuildContext context) {
+    _instance._calculateSizes(context);
+    return _instance;
+  }
+
+  _calculateSizes(BuildContext context) {
+    MediaQueryData media = MediaQuery.of(context);
+    _heightUnit = media.size.height / 100;
+    _widthUnit = media.size.width / 100;
+  }
 
   double height(double percentage) {
     return _heightUnit * percentage;
