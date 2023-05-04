@@ -1,6 +1,6 @@
 Index
 
-[Plugs With Signal](#1)
+[Plugs With Signal](#Plugs)
 
 [Plugs With Values](#2)
 
@@ -122,8 +122,7 @@ class ExampleController extends Controller {
 Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
 
-##1 
-Plugs with signal
+##Plugs with signal
 
 child.dart
 ```dart
