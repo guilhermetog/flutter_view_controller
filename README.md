@@ -1,6 +1,5 @@
 
 [Plugs With Signal](#PlugswithSignal)
-
 [Plugs With Values](#PlugWithValues)
 
 [Listen on the view](#ListenOnTheView)
