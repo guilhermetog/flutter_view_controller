@@ -1,12 +1,12 @@
 
-[Clique aqui para ler a Introdução](#Plugs with signal)
-[Clique Values](#PlugWithValues)
-[Clique aqui para ler a Introduo](#Listen on the view)
-[Clique aqui para ler a Introduão](#Listen inside the controllers)
-[Clique aqui para ler a Introção](#Connect notifiers)
-[Clique aqui para ler a Introção](#Notify a intire list)
-[Clique aqui para ler a Introção](#Notifiers without value)
-[Clique aqui para ler a Introção](#Contribute)
+[Plugs With Signal](#PlugswithSignal)
+[Plugs With Values](#PlugWithValues)
+[Listen on the view](#ListenOnTheView)
+[Listen Inside The Controllers](#ListenInsideTheControllers)
+[Connect Notifiers](#ConnectNotifiers)
+[Notify a intire list](#NotifyAIntireList)
+[Notifiers without value](#NotifiersWithoutValue)
+[Contribute](#Contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
@@ -115,6 +115,7 @@ Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
 
 ## Plugs with signal
+##PlugswithSignal
 
 child.dart
 ```dart
@@ -211,6 +212,7 @@ If you have a value that will affect the layout, you need to use a Notifier.
 You need to declare the Notifier in the controller, and all Notifiers must have a type.
 
 ## Listen on the view
+## ListenOnTheView
 
 You listen to it's changes with method "show" in the view.
 
@@ -253,6 +255,7 @@ class AppView extends View<AppController> {
 ```
 
 ## Listen inside the controllers
+## ListenInsideTheControllers
 
 You can also listen to changes inside controller.
 
@@ -274,6 +277,7 @@ class MessageController extends Controller {
 ```
 
 ## Connect notifiers
+## ConnectNotifiers
 
 You can also connect to another Notifier to propagate the change. 
 This is very useful when you have complex structures.
@@ -318,6 +322,7 @@ class ParentController extends Controller {
 ```
 
 ## Notify a intire list
+## NotifyAIntireList
 
 You can also use a NotifierList to create reactive lists in your layout. 
 NotifierList is still in the early stages, but it has the necessary methods to change its reactivity.
@@ -369,6 +374,7 @@ Therefore, to use it in a list, you need to wrap the entire list with it.
 After that, you can spread the items as you like.
 
 ## Notifiers without value
+# NotifiersWithoutValue
 
 If you want to notify some event without changing any value, you can use a NotifierTicker. 
 It can generate a pulse with all the capabilities of a Notifier. 
