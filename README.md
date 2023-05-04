@@ -1,10 +1,16 @@
 
 [Clique aqui para ler a Introdução](#plugs-with-signal)
+
 [Clique aqui para ler a Introdução](#plug-with-values)
+
 [Clique aqui para ler a Introdução](#listen-inside-the-controllers)
+
 [Clique aqui para ler a Introdução](#connect-notifiers)
+
 [Clique aqui para ler a Introdução](#notify-a-intire-list)
+
 [Clique aqui para ler a Introdução](#notifiers-without-value)
+
 [Clique aqui para ler a Introdução](#contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
