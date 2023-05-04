@@ -219,7 +219,8 @@ If you have a value that will affect the layout, you need to use a Notifier.
 
 You need to declare the Notifier in the controller, and all Notifiers must have a type.
 
-## 2 - ## Listen on the view
+## 2
+Listen on the view
 
 You listen to it's changes with method "show" in the view.
 
