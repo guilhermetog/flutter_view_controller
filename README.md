@@ -122,8 +122,7 @@ class ExampleController extends Controller {
 Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
 
-## Plugs with signal
-##PlugswithSignal
+#1 - Plugs with signal
 
 child.dart
 ```dart
