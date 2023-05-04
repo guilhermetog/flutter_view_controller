@@ -1,5 +1,11 @@
 
+[Clique aqui para ler a Introdução](#plugs-with-signal)
 [Clique aqui para ler a Introdução](#plug-with-values)
+[Clique aqui para ler a Introdução](#listen-inside-the-controllers)
+[Clique aqui para ler a Introdução](#connect-notifiers)
+[Clique aqui para ler a Introdução](#notify-a-intire-list)
+[Clique aqui para ler a Introdução](#notifiers-without-value)
+[Clique aqui para ler a Introdução](#contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
@@ -566,6 +572,7 @@ class AppView extends View<AppController> {
 In this example we built a Container with 55.2% of screen height and 10% of screen width.
 
 ## Contribute
+
 If you have some improvement or correction to make, please open a Issue on github 
 or leave a comment in any video of my youtube channel, 
 so we can talk about and find the best way to progress.
