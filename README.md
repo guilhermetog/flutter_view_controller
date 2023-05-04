@@ -1,3 +1,6 @@
+
+[Clique aqui para ler a Introdução](#plug-with-values)
+
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
 A State Management Flutter framework that integrates views and controllers together. 
