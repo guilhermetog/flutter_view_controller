@@ -1,12 +1,12 @@
 
-[Clique aqui para ler a Introdução](#Plugswithsignal)
-[Clique aqui para ler a Introdução](#Plug with Values)
-[Clique aqui para ler a Introdução](#Listen on the view)
-[Clique aqui para ler a Introdução](#Listen inside the controllers)
-[Clique aqui para ler a Introdução](#Connect notifiers)
-[Clique aqui para ler a Introdução](#Notify a intire list)
-[Clique aqui para ler a Introdução](#Notifiers without value)
-[Clique aqui para ler a Introdução](#Contribute)
+[Clique aqui para ler a Introdução](#Plugs with signal)
+[Clique Values](#PlugWithValues)
+[Clique aqui para ler a Introduo](#Listen on the view)
+[Clique aqui para ler a Introduão](#Listen inside the controllers)
+[Clique aqui para ler a Introção](#Connect notifiers)
+[Clique aqui para ler a Introção](#Notify a intire list)
+[Clique aqui para ler a Introção](#Notifiers without value)
+[Clique aqui para ler a Introção](#Contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
@@ -155,6 +155,7 @@ class ParentController extends Controller {
 ```
 
 ## Plug with Values
+## PlugWithValues
 
 Plugs can also carry values.
 In these cases you need 3 things: 
