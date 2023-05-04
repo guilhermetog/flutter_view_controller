@@ -1,6 +1,6 @@
 Index
 
-[Plugs With Signal](#Plugs)
+[Plugs With Signal](#Plug)
 
 [Plugs With Values](#2)
 
@@ -162,7 +162,6 @@ class ParentController extends Controller {
 }
 ```
 
-## 1
 ## Plug with Values
 
 Plugs can also carry values.
