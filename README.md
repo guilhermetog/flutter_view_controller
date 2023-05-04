@@ -1,21 +1,3 @@
-Index
-
-[Plugs With Signal](#Plug)
-
-[Plugs With Values](#2)
-
-[Listen on the view](#ListenOnTheView)
-
-[Listen Inside The Controllers](#ListenInsideTheControllers)
-
-[Connect Notifiers](#ConnectNotifiers)
-
-[Notify a intire list](#NotifyAIntireList)
-
-[Notifiers without value](#NotifiersWithoutValue)
-
-[Contribute](#Contribute)
-
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
 A State Management Flutter framework that integrates views and controllers together. 
@@ -122,7 +104,7 @@ class ExampleController extends Controller {
 Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
 
-##Plugs with signal
+## Plugs with signal
 
 child.dart
 ```dart
@@ -217,8 +199,7 @@ If you have a value that will affect the layout, you need to use a Notifier.
 
 You need to declare the Notifier in the controller, and all Notifiers must have a type.
 
-## 2
-Listen on the view
+## Listen on the view
 
 You listen to it's changes with method "show" in the view.
 
@@ -261,7 +242,6 @@ class AppView extends View<AppController> {
 ```
 
 ## Listen inside the controllers
-## ListenInsideTheControllers
 
 You can also listen to changes inside controller.
 
@@ -283,7 +263,6 @@ class MessageController extends Controller {
 ```
 
 ## Connect notifiers
-## ConnectNotifiers
 
 You can also connect to another Notifier to propagate the change. 
 This is very useful when you have complex structures.
@@ -328,7 +307,6 @@ class ParentController extends Controller {
 ```
 
 ## Notify a intire list
-## NotifyAIntireList
 
 You can also use a NotifierList to create reactive lists in your layout. 
 NotifierList is still in the early stages, but it has the necessary methods to change its reactivity.
@@ -380,7 +358,6 @@ Therefore, to use it in a list, you need to wrap the entire list with it.
 After that, you can spread the items as you like.
 
 ## Notifiers without value
-# NotifiersWithoutValue
 
 If you want to notify some event without changing any value, you can use a NotifierTicker. 
 It can generate a pulse with all the capabilities of a Notifier. 
