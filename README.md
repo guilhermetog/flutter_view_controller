@@ -1,6 +1,8 @@
+Index
 
-[Plugs With Signal](#PlugswithSignal)
-[Plugs With Values](#PlugWithValues)
+[Plugs With Signal](#1)
+
+[Plugs With Values](#2)
 
 [Listen on the view](#ListenOnTheView)
 
@@ -161,8 +163,8 @@ class ParentController extends Controller {
 }
 ```
 
+## 1
 ## Plug with Values
-## PlugWithValues
 
 Plugs can also carry values.
 In these cases you need 3 things: 
@@ -217,8 +219,7 @@ If you have a value that will affect the layout, you need to use a Notifier.
 
 You need to declare the Notifier in the controller, and all Notifiers must have a type.
 
-## Listen on the view
-## ListenOnTheView
+## 2 - ## Listen on the view
 
 You listen to it's changes with method "show" in the view.
 
