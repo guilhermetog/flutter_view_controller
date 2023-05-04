@@ -1,11 +1,18 @@
 
 [Plugs With Signal](#PlugswithSignal)
+
 [Plugs With Values](#PlugWithValues)
+
 [Listen on the view](#ListenOnTheView)
+
 [Listen Inside The Controllers](#ListenInsideTheControllers)
+
 [Connect Notifiers](#ConnectNotifiers)
+
 [Notify a intire list](#NotifyAIntireList)
+
 [Notifiers without value](#NotifiersWithoutValue)
+
 [Contribute](#Contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
