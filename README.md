@@ -1,12 +1,12 @@
-| Título                          | Descrição                         |
-| ------------------------------- | --------------------------------- |
-| Item 1                          | [Plugs with signal](#plugs-with-signal)        |
-| Item 1                          | [Plug With Values](#plug-with-values)          |
-| Item 1                          | [Listen on the view](#listen-on-the-view) |
-| Item 1                          | [Listen Inside The Controllers](#listen-inside-the-controllers)              |
-| Item 1                          | [Connect Notifiers](#connect-notifiers)         |
-| Item 1                          | [Notify a Intire List](#notify-a-intire-list)          |
-| Item 1                          | [Notifiers Without Value](#notifiers-without-value)          |
+| Título                          | Index                         | Descrição |
+| ------------------------------- | --------------------------------- |------------------------------------|
+| Item 1                          | [Plugs with signal](#plugs-with-signal)                         | Se desejar dar uma descrição | 
+| Item 1                          | [Plug With Values](#plug-with-values)                           | |
+| Item 1                          | [Listen on the view](#listen-on-the-view)                       | |
+| Item 1                          | [Listen Inside The Controllers](#listen-inside-the-controllers) | |
+| Item 1                          | [Connect Notifiers](#connect-notifiers)                         | |
+| Item 1                          | [Notify a Intire List](#notify-a-intire-list)                   | |
+| Item 1                          | [Notifiers Without Value](#notifiers-without-value)             | |
 | Item 1                          | [Contribute](#contribute)   |
 
 
