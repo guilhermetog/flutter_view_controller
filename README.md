@@ -1,6 +1,6 @@
 | Título                          | Descrição                         |
 | ------------------------------- | --------------------------------- |
-| Item 1                          | [1 - ](#plugs-with-signal)            |
+| Item 1                          | [Plugs with signal](#plugs-with-signal)            |
 | Item 2                          | [3 - ](#listen-inside-the-controllers)              |
 | Item 3                          | (#connect-notifiers)             |
 
