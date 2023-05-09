@@ -1,13 +1,13 @@
-| Título                          | Index                                                           | Descrição                       |
-| ------------------------------- | --------------------------------------------------------------- |---------------------------------|
-| Plugs with signal               | [Plugs with signal](#plugs-with-signal)                         | Se desejar dar uma descrição    | 
-| Plug With Values                | [Plug With Values](#plug-with-values)                           | Se desejar dar uma descrição    |
-| Listen on the view              | [Listen on the view](#listen-on-the-view)                       | Se desejar dar uma descrição    |
-| Listen Inside The Controllers   | [Listen Inside The Controllers](#listen-inside-the-controllers) | Se desejar dar uma descrição    |
-| Connect Notifiers               | [Connect Notifiers](#connect-notifiers)                         | Se desejar dar uma descrição    |
-| Notify a Intire List            | [Notify a Intire List](#notify-a-intire-list)                   | Se desejar dar uma descrição    |
-| Notifiers Without Value         | [Notifiers Without Value](#notifiers-without-value)             | Se desejar dar uma descrição    |
-| Contribute                      | [Contribute](#contribute)                                       | Se desejar dar uma descrição    |
+|          Description            |                           #Index                                |
+| ------------------------------- | --------------------------------------------------------------- |
+| Plugs with signal               | [Plugs with signal](#plugs-with-signal)                         |
+| Plug With Values                | [Plug With Values](#plug-with-values)                           |
+| Listen on the view              | [Listen on the view](#listen-on-the-view)                       |
+| Listen Inside The Controllers   | [Listen Inside The Controllers](#listen-inside-the-controllers) |
+| Connect Notifiers               | [Connect Notifiers](#connect-notifiers)                         |
+| Notify a Intire List            | [Notify a Intire List](#notify-a-intire-list)                   |
+| Notifiers Without Value         | [Notifiers Without Value](#notifiers-without-value)             |
+| Contribute                      | [Contribute](#contribute)                                       |
 
 
 
