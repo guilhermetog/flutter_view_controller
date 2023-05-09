@@ -1,14 +1,14 @@
 | Título                          | Descrição                         |
 | ------------------------------- | --------------------------------- |
-| Item 1                          | Descrição do Item 1               |
-| Item 2                          | Descrição do Item 2               |
-| Item 3                          | Descrição do Item 3               |
+| Item 1                          | (#plugs-with-signal)            |
+| Item 2                          | (#listen-inside-the-controllers)              |
+| Item 3                          | (#connect-notifiers)             |
 
-[1 - ](#plugs-with-signal)
+[1 - ]
 
 [2 - ](#plug-with-values)
 
-[3 - ](#listen-inside-the-controllers)
+[3 - ]
 
 [4 - ](#connect-notifiers)
 
