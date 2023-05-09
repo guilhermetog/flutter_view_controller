@@ -1,4 +1,4 @@
-|          Description            |                           #Index                                |
+| Description                     |                            Index                                |
 | ------------------------------- | --------------------------------------------------------------- |
 | Plugs with signal               | [Plugs with signal](#plugs-with-signal)                         |
 | Plug With Values                | [Plug With Values](#plug-with-values)                           |
