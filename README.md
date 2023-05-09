@@ -1,6 +1,20 @@
 | Título                          | Descrição                         |
 | ------------------------------- | --------------------------------- |
-| Item 1                          | [Plugs with signal](#plugs-with-signal)            |
+| Item 1                          | [Plugs with signal](#plugs-with-signal)        |
+| Item 1                          | [Plug With Values](#plug-with-values)          |
+| Item 1                          | [Listen Inside The Controllers](#listen-inside-the-controllers)              |
+
+
+
+| Item 1                          |           |
+| Item 1                          |           |
+| Item 1                          |           |
+| Item 1                          |           |
+| Item 1                          |           |
+| Item 1                          |           |
+
+
+
 | Item 2                          | [3 - ](#listen-inside-the-controllers)              |
 | Item 3                          | (#connect-notifiers)             |
 
