@@ -2,41 +2,14 @@
 | ------------------------------- | --------------------------------- |
 | Item 1                          | [Plugs with signal](#plugs-with-signal)        |
 | Item 1                          | [Plug With Values](#plug-with-values)          |
+| Item 1                          | [Listen on the view](#listen-on-the-view) |
 | Item 1                          | [Listen Inside The Controllers](#listen-inside-the-controllers)              |
-
-Listen on the view
-| Item 1                          |    [Listen on the view|(#listen-on-the-view)
-
-
-
-
-
-
-
-
-| Item 1                          |  [Connect Notifiers](#connect-notifiers)         |
+| Item 1                          | [Connect Notifiers](#connect-notifiers)         |
 | Item 1                          | [Notify a Intire List](#notify-a-intire-list)          |
 | Item 1                          | [Notifiers Without Value](#notifiers-without-value)          |
-| Item 1                          |           |
-| Item 1                          |           |
-| Item 1                          |           |
+| Item 1                          | [Contribute](#contribute)   |
 
 
-
-| Item 2                          | [3 - ](#listen-inside-the-controllers)              |
-| Item 3                          | (#connect-notifiers)             |
-
-[1 - ]
-
-
-
-[4 - ](#connect-notifiers)
-
-[5 - ](#notify-a-intire-list)
-
-[6 - ](#notifiers-without-value)
-
-[7 - ](#contribute)
 
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
