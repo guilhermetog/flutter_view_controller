@@ -1,17 +1,15 @@
 ![LogoType](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/logotype.png)
 
-A StateManagement Flutter Framework that builds together view e controller.
-The premisse is to use OOP composition to build a stable comunication between components.
+A State Management Flutter framework that integrates views and controllers together. 
+The premise is to use Object-Oriented Programming composition to establish stable communication between components. 
+There is a video where I explain how it works.
 
-There is a video where I explain how it works
 https://www.youtube.com/watch?v=SbK5sb_Oinc
-
-
 
 ![Hierarchy](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/hierarchy.png)
 
-The lib works better with a composition.
-The controller is composed of child controllers. These are passed as arguments for the correspondents child views.
+The library works better with composition. 
+The controller is composed of child controllers, which are passed as arguments to their corresponding child views.
 
 app.dart
 ```dart
@@ -40,20 +38,18 @@ class AppView extends View<AppController> {
 }
 ```
 
-Here is another video explaining how the component hierarchy can be designed
+Here is another video explaining how the component hierarchy can be designed.
+
 https://www.youtube.com/watch?v=3dWHU4ptYx0
-
-
-
 
 ![View](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/view.png)
 
-The view part is responsable for build the layout.
-Every view is static as default. 
-The reactivity is made by Notifiers. 
+The view part is responsible for building the layout. 
+By default, every view is static. 
+Reactivity is achieved through notifiers. 
 
-It can be use for the intire page or just a component.
-All View needs a controller. Even if it's not used.
+It can be used for the entire page or just a component. 
+Every view needs a controller, even if it's not used
 
 view.dart
 ```dart
@@ -73,22 +69,23 @@ class ExampleView extends View<ExampleController> {
 }
 ```
 
-
 ![Controller](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/controller.png)
 
-The Controller class is responsable for the behavior of the view.
-It contains all actions and atributes of the view.
-All view has direct access of it's corresponded controller.
-It includes methods and properties.
+The Controller class is responsible for the behavior of the view. 
+It contains all the actions and attributes of the view, and every view 
+has direct access to its corresponding controller. 
+The controller includes methods and properties.
 
-The controller is located in the state of a Stateful Widget. So it preserve it's state.
-It's lifecycle is corresponded to the State lifecycle.
+The controller is located in the state of a Stateful Widget, 
+so it preserves its state. 
+Its lifecycle corresponds to the State lifecycle. 
 
-This way the onInit method is executed at initState time;
-The onClose method is executed at dispose time;
+This means that the onInit method is executed at initState time, 
+and the onClose method is executed at dispose time. 
+Additionally, 
 
-It has a onUpdate optional method that is called when the update method is executed.
- 
+it has an optional onUpdate method that is called when the update method is executed.
+
 controller.dart
 ```dart
 import 'package:flutter_view_controller/flutter_view_controller.dart';
@@ -104,9 +101,8 @@ class ExampleController extends Controller {
 
 ![Plug](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/plug.png)
 
-Best way to think in Plug is as a callback with super powers.
+Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
-
 
 ## Plugs with signal
 
@@ -157,8 +153,6 @@ In these cases you need 3 things:
 - listen in the parent with the 'get' method.
 - call it through the method 'send'
 
-
-
 child.dart
 ```dart
 import 'package:flutter_view_controller/flutter_view_controller.dart';
@@ -197,16 +191,13 @@ class ParentController extends Controller {
 }
 ```
 
-
 ![Notifier](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/notifier.png)
 
-Notifiers are fundamental to the state management in a flutter view controller component.
-They are responsable for notify the view about some property change.
-If you have some value that will have effect in the layout, so you gonna use a Notifier.
+Notifiers are fundamental to the state management of a Flutter view controller component. 
+They are responsible for notifying the view about property changes. 
+If you have a value that will affect the layout, you need to use a Notifier.
 
-You need to declare it in the controller.
-All Notifier must to have a type.
-
+You need to declare the Notifier in the controller, and all Notifiers must have a type.
 
 ## Listen on the view
 
@@ -273,9 +264,8 @@ class MessageController extends Controller {
 
 ## Connect notifiers
 
-You can also connect to another Notifier to propagate the change.
-It is very useful when you have complex structures.
-
+You can also connect to another Notifier to propagate the change. 
+This is very useful when you have complex structures.
 
 child.dart
 ```dart
@@ -318,8 +308,8 @@ class ParentController extends Controller {
 
 ## Notify a intire list
 
-You also have NotifierList to make reactive lists in your layout.
-A NotifierList is still in eary stages just has the necessary methods to change it reactivitly.
+You can also use a NotifierList to create reactive lists in your layout. 
+NotifierList is still in the early stages, but it has the necessary methods to change its reactivity.
 
 app.dart
 ```dart
@@ -363,19 +353,17 @@ class AppView extends View<AppController> {
 }
 ```
 
-Note that the show method returns a single Widget.
-That's because it returns a NotifierListener aways.
-So to you in a lista, it needs to wrap the entire list. After you can spread the items as you like.
-
+Note that the show method returns a single Widget because it always returns a NotifierListener. 
+Therefore, to use it in a list, you need to wrap the entire list with it. 
+After that, you can spread the items as you like.
 
 ## Notifiers without value
 
-You also want to notify some event without change any value.
-For this we have a NotifierTicker that can generate a pulse with all capabilities a notifier has.
+If you want to notify some event without changing any value, you can use a NotifierTicker. 
+It can generate a pulse with all the capabilities of a Notifier. 
 
-But instead of add a new value to It, It comes with a method 'tick()' that fires up it.
-And also it's show method not recieves any value.
-
+However, instead of adding a new value to it, it comes with a tick() method that triggers it. 
+Also, its show method does not receive any value
 
 app.dart
 ```dart
@@ -415,20 +403,15 @@ class AppView extends View<AppController> {
 }
 ```
 
-
-NotifierTicker is used in the in the built-in method 'update' that all controller has.
-It is used to refresh all the page controlled by it.
-
+The NotifierTicker is used in the built-in update method that all controllers have. It is used to refresh all the pages controlled by it.
 
 ![Theme](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/theme.png)
 
-With Flutter View Controller you can develop dynamic themes easely with a GlobalState.
-
-A GlobalState is a map of objects which their changes make effect in the layout.
+With Flutter View Controller, you can easily develop dynamic themes using a GlobalState. 
+A GlobalState is a map of objects whose changes have an effect on the layout. 
 You can define a theme with a simple abstract class.
 
-
-Here is a example of how to create a theme file for your app or component.
+Here is an example of how to create a theme file for your app or component.
 
 contract.dart
 ```dart
@@ -471,9 +454,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-
-You can consume any properties of your theme at any view or controller like this:
-
+You can consume any properties of your theme in any view or controller like this:
 
 app.dart
 ```dart
@@ -505,8 +486,7 @@ class AppView extends View<AppController> {
 }
 ```
 
-
-To change the state you just need to change the current property;
+To change the state of the GlobalState, you just need to update the corresponding property.
 
 app.dart
 ```dart
@@ -535,7 +515,7 @@ class AppView extends View<AppController> {
 }
 ```
 
-You can use as many global states you want, to do differents things
+You can use as many GlobalStates as you want to do different things.
 
 main.dart
 ```dart
@@ -559,12 +539,8 @@ class MyApp extends StatelessWidget {
 
 ![ScreenSize](https://github.com/guilhermetog/flutter_view_controller/blob/main/assets/screensize.png)
 
-As a way to simplify the calculation of sizes to build the widgets, Flutter View Controller comes with a built-in propertie
-in it's views.
-You can access the size of screen witdh and heigth at any time, and even calculate a percentage of the view, to dimension
-your component.
-
-
+As a way to simplify the calculation of widget sizes, Flutter View Controller comes with a built-in property in its views. 
+You can access the screen width and height at any time and even calculate a percentage of the view to dimension your components.
 
 app.dart
 ```dart
@@ -585,7 +561,6 @@ class AppView extends View<AppController> {
 ```
 
 In this example we built a Container with 55.2% of screen height and 10% of screen width.
-
 
 ## Contribute
 If you have some improvement or correction to make, please open a Issue on github 
