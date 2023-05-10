@@ -33,8 +33,6 @@ class ScreenSize {
   }
 
   double viewHeight(double percentage) {
-    print(_height);
-    print(percentage);
     return _height * (percentage / 100);
   }
 
