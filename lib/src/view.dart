@@ -21,6 +21,16 @@ abstract class View<T extends Controller> extends StatefulWidget {
   View({required this.controller}) : super(key: controller.key);
   Widget build(BuildContext context);
 
+  withSize({double? height, double? width}) {
+    size.defineHeight(height);
+    size.defineWidth(width);
+  }
+
+  double height(double percentage) => size.viewHeight(percentage);
+  double width(double percentage) => size.viewWidth(percentage);
+  double screenHeight(double percentage) => size.height(percentage);
+  double screenWidth(double percentage) => size.width(percentage);
+
   @override
   State<StatefulWidget> createState() {
     return _ViewState<T>();
@@ -46,7 +56,7 @@ class _ViewState<T extends Controller> extends State<View<T>> {
 
   _initializeContext(BuildContext context) {
     if (!contextInitialized) {
-      widget.size.setContext(context);
+      widget.size.calculateSizes(context);
       controller.context = context;
       contextInitialized = true;
     }
