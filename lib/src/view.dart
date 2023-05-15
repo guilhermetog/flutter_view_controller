@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'notifier.dart';
+import 'package:flutter_view_controller/flutter_view_controller.dart';
+
 import 'screen_size.dart';
 
 class GlobalState<T> {
@@ -17,8 +18,17 @@ class GlobalState<T> {
 
 abstract class View<T extends Controller> extends StatefulWidget {
   final ScreenSize size = ScreenSize();
-  final T controller;
-  View({required this.controller}) : super(key: controller.key);
+  late final ControllerBox<T> _controllerBox;
+
+  T get controller => _controllerBox.controller!;
+  double get safeArea => size.paddingTop;
+
+  View({required T controller, Key? key}) : super(key: key) {
+    _controllerBox = ControllerBox();
+    controller.key ??= key;
+    _controllerBox.update(controller);
+  }
+
   Widget build(BuildContext context);
 
   withSize({double? height, double? width}) {
@@ -38,48 +48,61 @@ abstract class View<T extends Controller> extends StatefulWidget {
 }
 
 class _ViewState<T extends Controller> extends State<View<T>> {
-  late T controller;
-  bool contextInitialized = false;
+  T? controller;
+  bool controllerInitialized = false;
 
   @override
   initState() {
-    controller = widget.controller;
-    if (!controller._isInitialized) {
-      controller.onInit();
-      controller._isInitialized = true;
-      GlobalState._connect(controller._refresh);
+    _initializeController();
+    if (!controllerInitialized) {
+      controller!.onInit();
+      GlobalState._connect(controller!._refresh);
+      controllerInitialized = true;
     } else {
-      controller.onUpdate();
+      controller!.onUpdate();
     }
     super.initState();
   }
 
-  _initializeContext(BuildContext context) {
-    if (!contextInitialized) {
-      widget.size.calculateSizes(context);
-      controller.context = context;
-      contextInitialized = true;
+  _initializeController() {
+    if (controller == null) {
+      controller = widget.controller;
+    } else {
+      widget._controllerBox.update(controller!);
     }
+  }
+
+  _initializeContext(BuildContext context) {
+    widget.size.calculateSizes(context);
+    controller!.context = context;
   }
 
   @override
   dispose() {
-    controller._dispose();
+    controller!._dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _initializeController();
     _initializeContext(context);
-    return controller._refresh.show(() {
+    return controller!._refresh.show(() {
       return widget.build(context);
     });
   }
 }
 
+class ControllerBox<T> {
+  T? controller;
+
+  update(T controller) {
+    this.controller = controller;
+  }
+}
+
 abstract class Controller {
-  GlobalKey key = GlobalKey();
-  bool _isInitialized = false;
+  Key? key;
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ScreenSize {
-  double _totalHeight = 0;
-  double _totalWidth = 0;
+  static double _totalHeight = 0;
+  static double _totalWidth = 0;
+  static double _paddingTop = 0;
 
   double _height = 0;
   double _width = 0;
@@ -17,8 +18,9 @@ class ScreenSize {
 
   calculateSizes(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-    _totalHeight = media.size.height;
+    _totalHeight = media.size.height - media.padding.top;
     _totalWidth = media.size.width;
+    _paddingTop = media.padding.top;
     if (_height != 0 && _width != 0) return;
     _height = _totalHeight;
     _width = _totalWidth;
@@ -42,4 +44,5 @@ class ScreenSize {
 
   double get screenWidth => width(100);
   double get screenHeight => height(100);
+  double get paddingTop => _paddingTop;
 }
