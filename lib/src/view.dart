@@ -23,9 +23,8 @@ abstract class View<T extends Controller> extends StatefulWidget {
   T get controller => _controllerBox.controller!;
   double get safeArea => size.paddingTop;
 
-  View({required T controller, Key? key}) : super(key: key) {
+  View({required T controller}) : super(key: controller.key) {
     _controllerBox = ControllerBox();
-    controller.key ??= key;
     _controllerBox.update(controller);
   }
 
@@ -65,7 +64,7 @@ class _ViewState<T extends Controller> extends State<View<T>> {
   }
 
   _initializeController() {
-    if (controller == null) {
+    if (controller == null || controller!.key != widget.controller.key) {
       controller = widget.controller;
     } else {
       widget._controllerBox.update(controller!);
@@ -102,7 +101,7 @@ class ControllerBox<T> {
 }
 
 abstract class Controller {
-  Key? key;
+  GlobalKey key = GlobalKey();
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
 
