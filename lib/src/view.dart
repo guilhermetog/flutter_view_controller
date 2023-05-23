@@ -101,6 +101,16 @@ class ControllerBox<T> {
 }
 
 abstract class Controller {
+  static final Map<Type, Controller> _controllers = {};
+  static T register<T extends Controller>(T controller) {
+    if (_controllers.containsKey(T)) {
+      return _controllers[T] as T;
+    } else {
+      _controllers[T] = controller;
+      return controller;
+    }
+  }
+
   GlobalKey key = GlobalKey();
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
@@ -110,10 +120,11 @@ abstract class Controller {
   onClose();
 
   _dispose() {
+    if (_controllers.containsKey(runtimeType)) {
+      _controllers.remove(runtimeType);
+    }
     onClose();
   }
-
-  changeTheme() {}
 
   refresh() {
     onClose();
