@@ -9,11 +9,15 @@ class ScreenSize {
   double _width = 0;
 
   void defineHeight(double? height) {
-    _height = height ?? _height;
+    if (_height == 0) {
+      _height = height ?? _totalHeight;
+    }
   }
 
   void defineWidth(double? width) {
-    _width = width ?? _width;
+    if (_width == 0) {
+      _width = width ?? _totalWidth;
+    }
   }
 
   calculateSizes(BuildContext context) {
@@ -21,9 +25,6 @@ class ScreenSize {
     _totalHeight = media.size.height - media.padding.top;
     _totalWidth = media.size.width;
     _paddingTop = media.padding.top;
-    if (_height != 0 && _width != 0) return;
-    _height = _totalHeight;
-    _width = _totalWidth;
   }
 
   double height(double percentage) {
@@ -35,11 +36,13 @@ class ScreenSize {
   }
 
   double viewHeight(double percentage) {
-    return _height * (percentage / 100);
+    double height = _height == 0 ? _totalHeight : _height;
+    return height * (percentage / 100);
   }
 
   double viewWidth(double percentage) {
-    return _width * (percentage / 100);
+    double width = _width == 0 ? _totalWidth : _width;
+    return width * (percentage / 100);
   }
 
   double get screenWidth => width(100);
