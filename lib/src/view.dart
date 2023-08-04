@@ -16,6 +16,8 @@ class GlobalState<T> {
   }
 }
 
+typedef ViewOf<T extends Controller> = View<T>;
+
 abstract class View<T extends Controller> extends StatefulWidget {
   final ScreenSize size = ScreenSize();
   late final ControllerBox<T> _controllerBox;
