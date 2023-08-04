@@ -39,6 +39,7 @@ abstract class View<T extends Controller> extends StatefulWidget {
   double width(double percentage) => size.viewWidth(percentage);
   double screenHeight(double percentage) => size.height(percentage);
   double screenWidth(double percentage) => size.width(percentage);
+  double safeHeight(double percentage) => size.safeHeight(percentage);
 
   @override
   State<StatefulWidget> createState() {

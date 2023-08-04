@@ -45,6 +45,10 @@ class ScreenSize {
     return width * (percentage / 100);
   }
 
+  double safeHeight(double percentage) {
+    return height(percentage) + _paddingTop * (percentage / 100);
+  }
+
   double get screenWidth => width(100);
   double get screenHeight => height(100);
   double get paddingTop => _paddingTop;
