@@ -77,6 +77,7 @@ class _ViewState<T extends Controller> extends State<View<T>> {
   _initializeContext(BuildContext context) {
     widget.size.calculateSizes(context);
     controller!.context = context;
+    controller!.onContext(context);
   }
 
   @override
@@ -119,6 +120,7 @@ abstract class Controller {
   BuildContext? context;
 
   onInit();
+  onContext(BuildContext context) {}
   onUpdate() {}
   onClose();
 
