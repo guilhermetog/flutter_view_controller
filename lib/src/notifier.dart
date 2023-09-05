@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class Notifier<T> {
   late ValueNotifier<T> _notifier;
   final List<Function> _callbacks = [];
-  final List<Notifier<T>> _connectors = [];
+  List<Notifier<T>> _connectors = [];
   final List<NotifierTicker> _tickers = [];
 
   bool disposed = false;
 
   T get value => _notifier.value;
+
+  int get connectors => _connectors.length;
 
   set value(T value) {
     if (disposed) {
@@ -45,7 +47,16 @@ class Notifier<T> {
   }
 
   connect(Notifier<T> connector) {
+    if (_connectors.contains(connector)) return;
     _connectors.add(connector);
+  }
+
+  disconnect(Notifier<T> connector) {
+    _connectors.remove(connector);
+  }
+
+  disconnectAll() {
+    _connectors = [];
   }
 
   connectTicker(NotifierTicker ticker) {
