@@ -80,7 +80,7 @@ class AppController extends Controller {
   onClose() {}
 }
 
-class AppView extends View<AppController> {
+class AppView extends ViewOf<AppController> {
   AppView({required AppController controller}) : super(controller: controller);
 
   @override
@@ -126,9 +126,8 @@ class IconButtonController extends Controller {
   onClose() {}
 }
 
-class IconButtonView extends View<IconButtonController> {
-  IconButtonView({required IconButtonController controller})
-      : super(controller: controller);
+class IconButtonView extends ViewOf<IconButtonController> {
+  IconButtonView({required IconButtonController controller}) : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {
@@ -142,9 +141,7 @@ class IconButtonView extends View<IconButtonController> {
           margin: EdgeInsets.all(size.height(5)),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isEnabled
-                ? theme.backgroundColor
-                : theme.backgroundDisableColor,
+            color: isEnabled ? theme.backgroundColor : theme.backgroundDisableColor,
             boxShadow: [
               BoxShadow(
                 offset: const Offset(0, 2),

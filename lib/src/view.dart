@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
 
+import 'navigator_monitor.dart';
 import 'screen_size.dart';
 
 class GlobalState<T> {
@@ -26,6 +27,7 @@ abstract class View<T extends Controller> extends StatefulWidget {
   double get safeArea => size.paddingTop;
 
   View({required T controller}) : super(key: controller.key) {
+    controller._setNavigatorMonitor(runtimeType.toString());
     _controllerBox = ControllerBox();
     _controllerBox.update(controller);
   }
@@ -60,8 +62,6 @@ class _ViewState<T extends Controller> extends State<View<T>> {
       controller!.onInit();
       GlobalState._connect(controller!._refresh);
       controllerInitialized = true;
-    } else {
-      controller!.onUpdate();
     }
     super.initState();
   }
@@ -118,6 +118,12 @@ abstract class Controller {
   GlobalKey key = GlobalKey();
   final NotifierTicker _refresh = NotifierTicker();
   BuildContext? context;
+  late String viewType;
+
+  _setNavigatorMonitor(String view) {
+    viewType = view;
+    FVCNavigatorMonitor().onFocus(viewType, onUpdate);
+  }
 
   onInit();
   onContext(BuildContext context) {}
@@ -128,6 +134,7 @@ abstract class Controller {
     if (_controllers.containsKey(runtimeType)) {
       _controllers.remove(runtimeType);
     }
+    FVCNavigatorMonitor().removeListener(viewType);
     onClose();
   }
 
