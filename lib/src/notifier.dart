@@ -110,6 +110,10 @@ class NotifierList<T> {
     _notifier.value = [];
   }
 
+  update() {
+    value = [...value];
+  }
+
   listen(Function(List<T>) callback) {
     _callbacks.add(callback);
   }
