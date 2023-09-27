@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
 
-import 'navigator_monitor.dart';
 import 'screen_size.dart';
 
 class GlobalState<T> {
@@ -44,6 +43,8 @@ abstract class View<T extends Controller> extends StatefulWidget {
   double screenHeight(double percentage) => size.height(percentage);
   double screenWidth(double percentage) => size.width(percentage);
   double safeHeight(double percentage) => size.safeHeight(percentage);
+  double Function(double) fractionHeight(double percentage) => (value) => size.viewHeight(value / 100 * percentage);
+  double Function(double) fractionWidth(double percentage) => (value) => size.viewWidth(value / 100 * percentage);
 
   @override
   State<StatefulWidget> createState() {
