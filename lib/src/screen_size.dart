@@ -3,53 +3,50 @@ import 'package:flutter/material.dart';
 class ScreenSize {
   static double _totalHeight = 0;
   static double _totalWidth = 0;
-  static double _paddingTop = 0;
-
+  static double _appHeight = 0;
+  static double _appWidth = 0;
+  static double _statusBarHeight = 0;
   double _height = 0;
   double _width = 0;
 
   void defineHeight(double? height) {
     if (_height == 0) {
-      _height = height ?? _totalHeight;
+      _height = height ?? _appHeight;
     }
   }
 
   void defineWidth(double? width) {
     if (_width == 0) {
-      _width = width ?? _totalWidth;
+      _width = width ?? _appWidth;
     }
   }
 
   calculateSizes(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-    _totalHeight = media.size.height - media.padding.top;
+    _totalHeight = media.size.height;
     _totalWidth = media.size.width;
-    _paddingTop = media.padding.top;
+    _appHeight = media.size.height - media.padding.top;
+    _appWidth = media.size.width;
+    _statusBarHeight = media.padding.top;
   }
 
-  double height(double percentage) {
+  double screenHeight(double percentage) {
     return _totalHeight * (percentage / 100);
   }
 
-  double width(double percentage) {
+  double screenWidth(double percentage) {
     return _totalWidth * (percentage / 100);
   }
 
-  double viewHeight(double percentage) {
-    double height = _height == 0 ? _totalHeight : _height;
+  double height(double percentage) {
+    double height = _height == 0 ? _appHeight : _height;
     return height * (percentage / 100);
   }
 
-  double viewWidth(double percentage) {
-    double width = _width == 0 ? _totalWidth : _width;
+  double width(double percentage) {
+    double width = _width == 0 ? _appWidth : _width;
     return width * (percentage / 100);
   }
 
-  double safeHeight(double percentage) {
-    return height(percentage) + _paddingTop * (percentage / 100);
-  }
-
-  double get screenWidth => width(100);
-  double get screenHeight => height(100);
-  double get paddingTop => _paddingTop;
+  double get paddingTop => _statusBarHeight;
 }

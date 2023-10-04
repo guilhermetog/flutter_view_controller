@@ -23,7 +23,7 @@ abstract class View<T extends Controller> extends StatefulWidget {
   late final ControllerBox<T> _controllerBox;
 
   T get controller => _controllerBox.controller!;
-  double get safeArea => size.paddingTop;
+  double get statusBarHeight => size.paddingTop;
 
   View({required T controller}) : super(key: controller.key) {
     controller._setNavigatorMonitor(runtimeType.toString());
@@ -38,13 +38,12 @@ abstract class View<T extends Controller> extends StatefulWidget {
     size.defineWidth(width);
   }
 
-  double height(double percentage) => size.viewHeight(percentage);
-  double width(double percentage) => size.viewWidth(percentage);
-  double screenHeight(double percentage) => size.height(percentage);
-  double screenWidth(double percentage) => size.width(percentage);
-  double safeHeight(double percentage) => size.safeHeight(percentage);
-  double Function(double) fractionHeight(double percentage) => (value) => size.viewHeight(value / 100 * percentage);
-  double Function(double) fractionWidth(double percentage) => (value) => size.viewWidth(value / 100 * percentage);
+  double height(double percentage) => size.height(percentage);
+  double width(double percentage) => size.width(percentage);
+  double screenHeight(double percentage) => size.screenHeight(percentage);
+  double screenWidth(double percentage) => size.screenHeight(percentage);
+  double Function(double) fractionHeight(double percentage) => (value) => size.height(value / 100 * percentage);
+  double Function(double) fractionWidth(double percentage) => (value) => size.width(value / 100 * percentage);
 
   @override
   State<StatefulWidget> createState() {
