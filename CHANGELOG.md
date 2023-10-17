@@ -106,3 +106,16 @@
 * SWITCHED screenWidth WITH width ON VIEW
 * REMOVED safeHeith on VIEW
 * DEFINED NEW SIZE CALCULATION
+
+## 0.1.14 [BREAKING CHANGES]
+* ISOLATED ScreenSize CLASSES
+* REDEFINED ScreenSize METHODS
+  * screenHeight : height of full screen
+  * safeHeight: height of full screen minus paddingTop
+  * screenWidth: width of full screen
+  * height: relative height or safeHeight
+  * width: relative width or screenWidth
+  * paddingTop: size of cellphone status bar
+* CREATED fraction METHOD TO RETURN A ScreenSize PROPORTIONAL TO CURRENT
+* ADDED ScreenSize PARAMETER TO View CLASS
+* CREATED ScreenFractionBuilder TYPE TO UPDATE size AT RENDER TIME

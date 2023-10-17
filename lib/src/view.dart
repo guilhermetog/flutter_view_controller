@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
 
-import 'screen_size.dart';
-
 class GlobalState<T> {
   static final Map<Type, Notifier> _states = {};
   T get current => GlobalState._states[T]!.value;
@@ -19,13 +17,13 @@ class GlobalState<T> {
 typedef ViewOf<T extends Controller> = View<T>;
 
 abstract class View<T extends Controller> extends StatefulWidget {
-  final ScreenSize size = ScreenSize();
+  late final ScreenSize size;
   late final ControllerBox<T> _controllerBox;
 
   T get controller => _controllerBox.controller!;
-  double get statusBarHeight => size.paddingTop;
 
-  View({required T controller}) : super(key: controller.key) {
+  View({required T controller, ScreenSize? size}) : super(key: controller.key) {
+    this.size = size ?? ScreenSize.empty();
     controller._setNavigatorMonitor(runtimeType.toString());
     _controllerBox = ControllerBox();
     _controllerBox.update(controller);
@@ -33,25 +31,13 @@ abstract class View<T extends Controller> extends StatefulWidget {
 
   Widget build(BuildContext context);
 
-  withSize({double? height, double? width}) {
-    size.defineHeight(height);
-    size.defineWidth(width);
-  }
-
-  double height(double percentage) => size.height(percentage);
-  double width(double percentage) => size.width(percentage);
-  double screenHeight(double percentage) => size.screenHeight(percentage);
-  double screenWidth(double percentage) => size.screenHeight(percentage);
-  double Function(double) fractionHeight(double percentage) => (value) => size.height(value / 100 * percentage);
-  double Function(double) fractionWidth(double percentage) => (value) => size.width(value / 100 * percentage);
-
   @override
   State<StatefulWidget> createState() {
     return _ViewState<T>();
   }
 }
 
-class _ViewState<T extends Controller> extends State<View<T>> {
+class _ViewState<T extends Controller> extends State<View<T>> with TickerProviderStateMixin {
   T? controller;
   bool controllerInitialized = false;
 

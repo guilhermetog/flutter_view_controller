@@ -1,52 +1,61 @@
 import 'package:flutter/material.dart';
 
+typedef ScreenFractionBuilder = Widget Function(ScreenSize);
+
 class ScreenSize {
-  static double _totalHeight = 0;
-  static double _totalWidth = 0;
-  static double _appHeight = 0;
-  static double _appWidth = 0;
-  static double _statusBarHeight = 0;
-  double _height = 0;
-  double _width = 0;
+  static double _safeHeight = 0;
+  static double _safeWidth = 0;
+  static double _paddingTop = 0;
 
-  void defineHeight(double? height) {
-    if (_height == 0) {
-      _height = height ?? _appHeight;
-    }
-  }
+  final double? _height;
+  final double? _width;
 
-  void defineWidth(double? width) {
-    if (_width == 0) {
-      _width = width ?? _appWidth;
-    }
+  double get paddingTop => _paddingTop;
+
+  const ScreenSize(this._height, this._width);
+
+  factory ScreenSize.empty() => const ScreenSize(null, null);
+  factory ScreenSize.only({double? height, double? width}) => ScreenSize(height, width);
+  factory ScreenSize.percentage({double? height, double? width}) {
+    double? innerHeight;
+    double? innerWidth;
+
+    if (height != null) innerHeight = _safeHeight * (height / 100);
+    if (width != null) innerWidth = _safeWidth * (width / 100);
+
+    return ScreenSize(innerHeight, innerWidth);
   }
 
   calculateSizes(BuildContext context) {
     MediaQueryData media = MediaQuery.of(context);
-    _totalHeight = media.size.height;
-    _totalWidth = media.size.width;
-    _appHeight = media.size.height - media.padding.top;
-    _appWidth = media.size.width;
-    _statusBarHeight = media.padding.top;
-  }
-
-  double screenHeight(double percentage) {
-    return _totalHeight * (percentage / 100);
-  }
-
-  double screenWidth(double percentage) {
-    return _totalWidth * (percentage / 100);
+    _safeHeight = media.size.height - media.padding.top;
+    _safeWidth = media.size.width;
+    _paddingTop = media.padding.top;
   }
 
   double height(double percentage) {
-    double height = _height == 0 ? _appHeight : _height;
+    double height = _height ?? _safeHeight;
     return height * (percentage / 100);
   }
 
   double width(double percentage) {
-    double width = _width == 0 ? _appWidth : _width;
+    double width = _width ?? _safeWidth;
     return width * (percentage / 100);
   }
 
-  double get paddingTop => _statusBarHeight;
+  double screenHeight(double percentage) {
+    return _safeHeight + paddingTop * (percentage / 100);
+  }
+
+  double screenWidth(double percentage) {
+    return _safeWidth * (percentage / 100);
+  }
+
+  double safeHeight(double percentage) {
+    return _safeHeight * (percentage / 100);
+  }
+
+  ScreenSize fraction({double? height, double? width}) {
+    return ScreenSize(this.height(height ?? 100), this.width(width ?? 100));
+  }
 }
