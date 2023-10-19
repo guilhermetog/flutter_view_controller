@@ -5,9 +5,9 @@ class FVCNavigatorMonitor extends NavigatorObserver {
   factory FVCNavigatorMonitor() => _instance;
   FVCNavigatorMonitor._();
 
-  final Map<String, Function> _callbacks = {};
+  final Map<String, Function(String?)> _callbacks = {};
 
-  onFocus(String pageName, Function callback) {
+  onFocus(String pageName, Function(String?) callback) {
     _callbacks[pageName] = callback;
   }
 
@@ -28,7 +28,7 @@ class FVCNavigatorMonitor extends NavigatorObserver {
     }
 
     if (_callbacks.containsKey(current)) {
-      _callbacks[current]!();
+      _callbacks[current]!(previous);
     }
   }
 }

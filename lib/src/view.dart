@@ -113,7 +113,7 @@ abstract class Controller {
 
   onInit();
   onContext(BuildContext context) {}
-  onUpdate() {}
+  onUpdate(String? lastRouteName) {}
   onClose();
 
   _dispose() {
