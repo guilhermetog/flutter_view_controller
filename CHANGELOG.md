@@ -122,3 +122,7 @@
 
 ## 0.1.15
 * ADDED lastRouteName as PARAMETER TO update METHOD ON Controller CLASS
+
+
+## 0.1.16
+* BUGFIX IN screenHeight CALCULATION

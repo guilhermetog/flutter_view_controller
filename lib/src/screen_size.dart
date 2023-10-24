@@ -44,7 +44,7 @@ class ScreenSize {
   }
 
   double screenHeight(double percentage) {
-    return _safeHeight + paddingTop * (percentage / 100);
+    return (_safeHeight + paddingTop) * (percentage / 100);
   }
 
   double screenWidth(double percentage) {
