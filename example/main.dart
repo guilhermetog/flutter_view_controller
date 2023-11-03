@@ -81,7 +81,7 @@ class AppController extends Controller {
 }
 
 class AppView extends ViewOf<AppController> {
-  AppView({required AppController controller}) : super(controller: controller);
+  const AppView({super.key, required AppController controller}) : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class IconButtonController extends Controller {
 }
 
 class IconButtonView extends ViewOf<IconButtonController> {
-  IconButtonView({required IconButtonController controller}) : super(controller: controller);
+  const IconButtonView({super.key, required IconButtonController controller}) : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {

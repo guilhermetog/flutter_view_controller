@@ -1,98 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
 
-class GlobalState<T> {
-  static final Map<Type, Notifier> _states = {};
-  T get current => GlobalState._states[T]!.value;
-  set current(T value) => GlobalState._states[T]!.value = value;
+abstract class ViewOf<T extends Controller> extends StatefulWidget {
+  final T controller;
+  final ScreenSize size;
 
-  register(T value) => GlobalState._states[T] = Notifier(value);
-  static void _connect(NotifierTicker ticker) {
-    for (final state in _states.values) {
-      state.connectTicker(ticker);
-    }
-  }
-}
-
-typedef ViewOf<T extends Controller> = View<T>;
-
-abstract class View<T extends Controller> extends StatefulWidget {
-  late final ScreenSize size;
-  late final ControllerBox<T> _controllerBox;
-
-  T get controller => _controllerBox.controller!;
-
-  View({required T controller, ScreenSize? size}) : super(key: controller.key) {
-    this.size = size ?? ScreenSize.empty();
-    controller._setNavigatorMonitor(runtimeType.toString());
-    _controllerBox = ControllerBox();
-    _controllerBox.update(controller);
-  }
-
+  const ViewOf({super.key, required this.controller, this.size = const ScreenSize(null, null)});
   Widget build(BuildContext context);
 
   @override
-  State<StatefulWidget> createState() {
-    return _ViewState<T>();
-  }
+  State<ViewOf<T>> createState() => _ViewOfState<T>();
 }
 
-class _ViewState<T extends Controller> extends State<View<T>> with TickerProviderStateMixin {
-  T? controller;
-  bool controllerInitialized = false;
-
+class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
   @override
-  initState() {
-    _initializeController();
-    if (!controllerInitialized) {
-      controller!.onInit();
-      GlobalState._connect(controller!._refresh);
-      controllerInitialized = true;
-    }
-    super.initState();
-  }
-
-  _initializeController() {
-    if (controller == null || controller!.key != widget.controller.key) {
-      controller = widget.controller;
-    } else {
-      widget._controllerBox.update(controller!);
-    }
-  }
-
-  _initializeContext(BuildContext context) {
-    widget.size.calculateSizes(context);
-    controller!.context = context;
-    controller!.onContext(context);
-  }
-
-  @override
-  dispose() {
-    controller!._dispose();
+  void dispose() {
+    widget.controller._dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initializeController();
-    _initializeContext(context);
-    return controller!._refresh.show(() {
+    if (!widget.controller._alreadyInitialized) {
+      widget.controller._setNavigatorMonitor(runtimeType.toString());
+      widget.controller._setSize(widget.size);
+      widget.controller._setContext(context);
+      widget.controller._initialize();
+    }
+
+    return widget.controller._refresh.show(() {
       return widget.build(context);
     });
   }
 }
 
-class ControllerBox<T> {
-  T? controller;
+abstract class Controller {
+  late ScreenSize size;
+  final NotifierTicker _refresh = NotifierTicker();
+  late BuildContext context;
+  late String _viewType;
+  bool _alreadyInitialized = false;
 
-  update(T controller) {
-    this.controller = controller;
+  onInit();
+  onUpdate(String? lastRouteName) {}
+  onClose();
+
+  _setSize(ScreenSize size) {
+    this.size = size;
+  }
+
+  _setNavigatorMonitor(String view) {
+    _viewType = view;
+    FVCNavigatorMonitor().onFocus(_viewType, onUpdate);
+  }
+
+  _setContext(context) {
+    this.context = context;
+    size.calculateSizes(context);
+  }
+
+  _initialize() {
+    _alreadyInitialized = true;
+    onInit();
+  }
+
+  _dispose() {
+    FVCNavigatorMonitor().removeListener(_viewType);
+    _ControllerRepository().remove(this);
+    onClose();
+  }
+
+  refresh() {
+    _refresh.tick();
+  }
+
+  reload() {
+    onClose();
+    onInit();
+    refresh();
+  }
+
+  static T register<T extends Controller>(T controller) {
+    return _ControllerRepository().register(controller);
   }
 }
 
-abstract class Controller {
+class _ControllerRepository {
   static final Map<Type, Controller> _controllers = {};
-  static T register<T extends Controller>(T controller) {
+
+  T register<T extends Controller>(T controller) {
     if (_controllers.containsKey(T)) {
       return _controllers[T] as T;
     } else {
@@ -101,32 +97,9 @@ abstract class Controller {
     }
   }
 
-  GlobalKey key = GlobalKey();
-  final NotifierTicker _refresh = NotifierTicker();
-  BuildContext? context;
-  late String viewType;
-
-  _setNavigatorMonitor(String view) {
-    viewType = view;
-    FVCNavigatorMonitor().onFocus(viewType, onUpdate);
-  }
-
-  onInit();
-  onContext(BuildContext context) {}
-  onUpdate(String? lastRouteName) {}
-  onClose();
-
-  _dispose() {
-    if (_controllers.containsKey(runtimeType)) {
-      _controllers.remove(runtimeType);
+  void remove<T extends Controller>(T controller) {
+    if (_controllers.containsValue(controller)) {
+      _controllers.removeWhere((key, value) => value.hashCode == controller.hashCode);
     }
-    FVCNavigatorMonitor().removeListener(viewType);
-    onClose();
-  }
-
-  refresh() {
-    onClose();
-    onInit();
-    _refresh.tick();
   }
 }

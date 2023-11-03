@@ -4,12 +4,12 @@ class Plug<T> {
 
   bool get isConnected => _isConnected;
 
-  then(Function f) {
+  then(Function() f) {
     _isConnected = true;
     callback = f;
   }
 
-  get(Function(T) f) {
+  take(Function(T) f) {
     _isConnected = true;
     callback = f;
   }

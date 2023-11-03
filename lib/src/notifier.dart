@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Notifier<T> {
+  late final NotifierMonitor<T> _notifierMonitor = NotifierMonitor(_notifier);
   late ValueNotifier<T> _notifier;
   final List<Function> _callbacks = [];
-  List<Notifier<T>> _connectors = [];
+  final List<Notifier<T>> _connectors = [];
   final List<NotifierTicker> _tickers = [];
 
   bool disposed = false;
@@ -36,14 +37,15 @@ class Notifier<T> {
   }
 
   Widget show(Function(T) builder) {
-    return ValueListenableBuilder<T>(
-      valueListenable: _notifier,
-      builder: (_, value, __) => builder(value),
-    );
+    return _notifierMonitor.show(builder);
   }
 
   listen(Function(T) callback) {
     _callbacks.add(callback);
+  }
+
+  unlisten(Function(T) callback) {
+    _callbacks.remove(callback);
   }
 
   connect(Notifier<T> connector) {
@@ -56,11 +58,19 @@ class Notifier<T> {
   }
 
   disconnectAll() {
-    _connectors = [];
+    _connectors.clear();
   }
 
   connectTicker(NotifierTicker ticker) {
     _tickers.add(ticker);
+  }
+
+  disconnectTicker(NotifierTicker ticker) {
+    _tickers.remove(ticker);
+  }
+
+  disconnectAllTickers() {
+    _tickers.clear();
   }
 
   dispose() {
@@ -72,6 +82,7 @@ class Notifier<T> {
 }
 
 class NotifierList<T> {
+  late final NotifierMonitor<List<T>> _notifiersMonitor = NotifierMonitor(_notifier);
   late final ValueNotifier<List<T>> _notifier = ValueNotifier([]);
   final List<Function> _callbacks = [];
   final List<NotifierList<T>> _connectors = [];
@@ -91,10 +102,7 @@ class NotifierList<T> {
   }
 
   Widget show(Function(List<T>) builder) {
-    return ValueListenableBuilder<List<T>>(
-      valueListenable: _notifier,
-      builder: (_, value, __) => builder(value),
-    );
+    return _notifiersMonitor.show(builder);
   }
 
   add(T object) {
@@ -130,6 +138,7 @@ class NotifierList<T> {
 }
 
 class NotifierTicker {
+  late final NotifierMonitor<bool> _notifierMonitor = NotifierMonitor(_notifier);
   final ValueNotifier<bool> _notifier = ValueNotifier(false);
   final List<Function> _callbacks = [];
   final List<NotifierTicker> _connectors = [];
@@ -155,14 +164,28 @@ class NotifierTicker {
   }
 
   Widget show(Function builder) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: _notifier,
-      builder: (_, value, __) => builder(),
-    );
+    return _notifierMonitor.show((value) => builder());
   }
 
   dispose() {
     _callbacks.clear();
     _notifier.dispose();
+  }
+}
+
+class NotifierMonitor<T> {
+  final List<Function(T)> _builderCallbacks = [];
+  final ValueNotifier<T> _notifier;
+
+  NotifierMonitor(this._notifier);
+
+  Widget show(Function(T) builder) {
+    _builderCallbacks.add(builder);
+    return ValueListenableBuilder<T>(
+      valueListenable: _notifier,
+      builder: (context, value, child) {
+        return builder(value);
+      },
+    );
   }
 }
