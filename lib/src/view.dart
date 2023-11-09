@@ -22,7 +22,7 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
   @override
   Widget build(BuildContext context) {
     if (!widget.controller._alreadyInitialized) {
-      widget.controller._setNavigatorMonitor(runtimeType.toString());
+      widget.controller._setNavigatorMonitor(widget.runtimeType.toString());
       widget.controller._setSize(widget.size);
       widget.controller._setContext(context);
       widget.controller._initialize();

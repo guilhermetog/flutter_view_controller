@@ -36,6 +36,7 @@ All of it and much more with a elegant and simple sintaxe.
 <br/>
 
 <a name="hierarchy"></a>
+
 ![Hierarchy](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/hierarchy.png)
 
 The controller is composed of child controllers, which are passed as arguments to their corresponding child views.
@@ -90,6 +91,7 @@ class ChildView extends ViewOf<ChildController> {
 <br/><br/><br/>
 
 <a name="view"></a>
+
 ![View](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/view.png)
 
 The view part is responsible for building the layout. 
@@ -120,6 +122,7 @@ class ExampleView extends ViewOf<ExampleController> {
 <br/><br/><br/>
 
 <a name="controller"></a>
+
 ![Controller](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/controller.png)
 
 The Controller class is responsible for the behavior of the view. 
@@ -155,12 +158,14 @@ class ExampleController extends Controller {
 ##
 <br/><br/><br/>
 <a name="plug"></a>
+
 ![Plug](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/plug.png)
 
 Best way to think in "Plug" is as a callback with super powers.
 You define it in the child object, and listen to updates from the parent.
 
 <a name="plug-signal"></a>
+
 ## Plug with signal
 
 child.dart
@@ -203,6 +208,7 @@ class ParentController extends Controller {
 <br/><br/>
 
 <a name="plug-data"></a>
+
 ## Plug with data
 
 Plugs can also carry data.
@@ -252,6 +258,7 @@ class ParentController extends Controller {
 ##
 <br/><br/><br/>
 <a name="notifier"></a>
+
 ![Notifier](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/notifier.png)
 
 Notifiers are fundamental to the state management of a Flutter View Controller component. 
@@ -262,6 +269,7 @@ You need to declare the Notifier in the controller, and all Notifiers must have 
 <br/><br/>
 
 <a name="notifier-view"></a>
+
 ## View updates
 
 You listen to it's changes with method "show" in the view.<br/>
@@ -478,6 +486,7 @@ The NotifierTicker is used in the built-in update method that all controllers ha
 ##
 <br/><br/><br/>
 <a name="theme"></a>
+
 ![Theme](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/theme.png)
 
 With Flutter View Controller, you can easily develop dynamic themes using a GlobalState. 
