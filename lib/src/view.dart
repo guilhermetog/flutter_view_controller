@@ -26,9 +26,9 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
       widget.controller._setSize(widget.size);
       widget.controller._initialize();
     }
-    widget.controller._setContext(context);
 
     return widget.controller._refresh.show(() {
+      widget.controller._setContext(context);
       return widget.build(context);
     });
   }
@@ -51,7 +51,7 @@ abstract class Controller {
 
   _setNavigatorMonitor(String view) {
     _viewType = view;
-    FVCNavigatorMonitor().onFocus(_viewType, onUpdate);
+    FVCNavigatorMonitor().onFocus(_viewType, _update);
   }
 
   _setContext(context) {
@@ -62,6 +62,11 @@ abstract class Controller {
   _initialize() {
     _alreadyInitialized = true;
     onInit();
+  }
+
+  _update(String? lastRouteName) {
+    refresh();
+    onUpdate(lastRouteName);
   }
 
   _dispose() {

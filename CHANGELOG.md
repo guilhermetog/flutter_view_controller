@@ -146,3 +146,7 @@
 
 ## 0.1.19
 * BUGFIX IN widget.controller._setContext(context) FOR UPDATE CONTEXT EVERY REBUILD
+
+## 0.1.20
+* FORCED REFRESH VIEW BEFORE onUpdate
+* MOVED setContext TO INSIDE _refresh CALLBACK
