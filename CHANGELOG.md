@@ -143,3 +143,6 @@
 
 ## 0.1.18
 * BUGFIX IN widget.runtimeType.toString() FOR _setNavigatorMonitor PARAMETER
+
+## 0.1.19
+* BUGFIX IN widget.controller._setContext(context) FOR UPDATE CONTEXT EVERY REBUILD

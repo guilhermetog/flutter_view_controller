@@ -24,9 +24,9 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
     if (!widget.controller._alreadyInitialized) {
       widget.controller._setNavigatorMonitor(widget.runtimeType.toString());
       widget.controller._setSize(widget.size);
-      widget.controller._setContext(context);
       widget.controller._initialize();
     }
+    widget.controller._setContext(context);
 
     return widget.controller._refresh.show(() {
       return widget.build(context);
