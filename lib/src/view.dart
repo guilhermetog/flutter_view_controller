@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'dart:async';
 
 abstract class ViewOf<T extends Controller> extends StatefulWidget {
   final T controller;
@@ -13,6 +14,17 @@ abstract class ViewOf<T extends Controller> extends StatefulWidget {
 }
 
 class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
+  void _initialize(BuildContext context) {
+    if (!widget.controller._alreadyInitialized) {
+      widget.controller._setNavigatorMonitor(widget.runtimeType.toString());
+      widget.controller._setSize(widget.size);
+      widget.controller._setContext(context);
+      widget.controller._initialize();
+    } else {
+      widget.controller._setContext(context);
+    }
+  }
+
   @override
   void dispose() {
     widget.controller._dispose();
@@ -21,15 +33,11 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.controller._alreadyInitialized) {
-      widget.controller._setNavigatorMonitor(widget.runtimeType.toString());
-      widget.controller._setSize(widget.size);
-      widget.controller._initialize();
-    }
-
     return widget.controller._refresh.show(() {
-      widget.controller._setContext(context);
-      return widget.build(context);
+      _initialize(context);
+      Widget w = widget.build(context);
+      widget.controller._ready();
+      return w;
     });
   }
 }
@@ -40,6 +48,10 @@ abstract class Controller {
   late BuildContext context;
   late String _viewType;
   bool _alreadyInitialized = false;
+
+  bool get readyCondition => true;
+
+  Plug onReady = Plug();
 
   onInit();
   onUpdate(String? lastRouteName) {}
@@ -64,6 +76,17 @@ abstract class Controller {
     onInit();
   }
 
+  _ready() {
+    Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (readyCondition) {
+        timer.cancel();
+        if (onReady.isConnected) {
+          onReady();
+        }
+      }
+    });
+  }
+
   _update(String? lastRouteName) {
     refresh();
     onUpdate(lastRouteName);
@@ -79,9 +102,9 @@ abstract class Controller {
     _refresh.tick();
   }
 
-  reload() {
-    onClose();
-    onInit();
+  reload() async {
+    await onClose();
+    await onInit();
     refresh();
   }
 
