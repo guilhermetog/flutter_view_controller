@@ -4,9 +4,13 @@ import 'dart:async';
 
 abstract class ViewOf<T extends Controller> extends StatefulWidget {
   final T controller;
-  final ScreenSize size;
+  final Sizer size;
 
-  const ViewOf({super.key, required this.controller, this.size = const ScreenSize(null, null)});
+  const ViewOf({
+    super.key,
+    required this.controller,
+    this.size = const Sizer(null, null),
+  });
   Widget build(BuildContext context);
 
   @override
@@ -43,11 +47,12 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
 }
 
 abstract class Controller {
-  late ScreenSize size;
+  late Sizer size;
   final NotifierTicker _refresh = NotifierTicker();
   late BuildContext context;
   late String _viewType;
   bool _alreadyInitialized = false;
+  bool _alreadyReady = false;
 
   bool get readyCondition => true;
 
@@ -57,13 +62,12 @@ abstract class Controller {
   onUpdate(String? lastRouteName) {}
   onClose();
 
-  _setSize(ScreenSize size) {
+  _setSize(Sizer size) {
     this.size = size;
   }
 
   _setNavigatorMonitor(String view) {
     _viewType = view;
-    FVCNavigatorMonitor().onFocus(_viewType, _update);
   }
 
   _setContext(context) {
@@ -80,7 +84,9 @@ abstract class Controller {
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
       if (readyCondition) {
         timer.cancel();
-        if (onReady.isConnected) {
+        FVCNavigatorMonitor().onFocus(_viewType, _update);
+        if (onReady.isConnected && !_alreadyReady) {
+          _alreadyReady = true;
           onReady();
         }
       }
@@ -127,7 +133,8 @@ class _ControllerRepository {
 
   void remove<T extends Controller>(T controller) {
     if (_controllers.containsValue(controller)) {
-      _controllers.removeWhere((key, value) => value.hashCode == controller.hashCode);
+      _controllers
+          .removeWhere((key, value) => value.hashCode == controller.hashCode);
     }
   }
 }
