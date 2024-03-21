@@ -6,11 +6,13 @@ abstract class ViewOf<T extends Controller> extends StatefulWidget {
   final T controller;
   final Sizer size;
 
-  const ViewOf({
+  // ignore: prefer_const_constructors_in_immutables
+  ViewOf({
     super.key,
     required this.controller,
     this.size = const Sizer(null, null),
   });
+
   Widget build(BuildContext context);
 
   @override
@@ -72,7 +74,7 @@ abstract class Controller {
 
   _setContext(context) {
     this.context = context;
-    size.calculateSizes(context);
+    Sizer.calculateSize(context);
   }
 
   _initialize() {
