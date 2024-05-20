@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  plug: ^1.0.0
-  sizer_plus: ^0.0.1
+  plug: ^1.0.1
+  sizer_plus: ^0.0.4
 
 dev_dependencies:
   flutter_test:

@@ -12,28 +12,22 @@ All of it and much more with a elegant and simple sintaxe.
 
 ## Table of Contents
 
-- [ Hierarchy of Components](#hierarchy)
-- [ View ](#view)
-- [ Controller](#controller)
-- [ Notifier](#notifier)
-   - [ View updates](#notifier-view)
-   - [ Listen to changes inside the controllers](#notifier-controller)
-   - [ Connecting Notifiers](#notifier-connect)
-   - [ Notifing Lists](#notifier-list)
-   - [ Notifing signals](#notifier-ticker)
- - [Themes](#theme)
-   - [Defining a theme](#theme-define)
-   - [Consuming a theme](#theme-consume)
-   - [Changing a theme](#theme-change)
-   - [Segmenting themes components](#theme-components)
- - [Sizes](#size)
+- [Hierarchy](#hierarchy)
+- [View](#view)
+- [Controller](#controller)
+- [Notifier](#notifier)
+  - [View updates](#view-updates)
+  - [Listen to change inside the controllers](#listen-to-change-inside-the-controllers)
+  - [Connecting notifiers](#connecting-notifiers)
+  - [Notifing lists](#notifing-lists)
+  - [Notifiers without value](#notifiers-without-value)
+- [ScreenSizer](#screensizer)
+- [Contribute](#contribute)
 
-##
-<br/>
-<br/>
-
+<br/><br/>
 <a name="hierarchy"></a>
 
+# Hierarchy
 ![Hierarchy](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/hierarchy.png)
 
 The controller is composed of child controllers, which are passed as arguments to their corresponding child views.
@@ -84,11 +78,11 @@ class ChildView extends ViewOf<ChildController> {
   }
 }
 ```
-##
 <br/><br/><br/>
 
 <a name="view"></a>
 
+# View
 ![View](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/view.png)
 
 The view part is responsible for building the layout. 
@@ -115,11 +109,11 @@ class ExampleView extends ViewOf<ExampleController> {
   }
 }
 ```
-##
 <br/><br/><br/>
 
 <a name="controller"></a>
 
+# Controller
 ![Controller](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/controller.png)
 
 The Controller class is responsible for the behavior of the view. 
@@ -152,11 +146,11 @@ class ExampleController extends Controller {
   onClose(){}
 }
 ```
-##
 <br/><br/><br/>
 
 <a name="notifier"></a>
 
+# Notifier
 ![Notifier](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/notifier.png)
 
 Notifiers are fundamental to the state management of a Flutter View Controller component. 
@@ -381,157 +375,10 @@ class AppView extends View<AppController> {
 
 The NotifierTicker is used in the built-in update method that all controllers have. It is used to refresh all the pages controlled by it.
 
-##
-<br/><br/><br/>
-<a name="theme"></a>
 
-![Theme](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/theme.png)
-
-With Flutter View Controller, you can easily develop dynamic themes using a GlobalState. 
-A GlobalState is a map of objects whose changes have an effect globally on your aplication during runtime. 
-You can define a theme with a simple abstract class.
-
-
-<a name="theme-define"></a>
-
-## Defining themes
-Here is an example of how to create a theme file for your app or component.
-
-contract.dart
-```dart
-abstract class ThemeContract{
-  late Color backgroundColor;
-  late Color foregroundColor;
-}
-```
-
-light.dart
-```dart
-class LightTheme implements ThemeContract{
-  Color backgroundColor = Colors.white;
-  Color foregroundColor = Colors.grey;
-}
-```
-
-dark.dart
-```dart
-class LightTheme implements ThemeContract{
-  Color backgroundColor = Colors.black;
-  Color foregroundColor = Colors.blueGrey;
-}
-```
-
-main.dart
-```dart
-...
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    GlobalState<ThemeContract>().register(LightTheme());
-    ...
-    return MaterialApp(
-      ...
-    );
-  }
-}
-```
-<br/><br/>
-<a name="theme-consume"></a>
-
-## Consuming themes
-You can consume any properties of your theme in any view or controller like this:
-
-app.dart
-```dart
-import 'package:flutter_view_controller/flutter_view_controller.dart';
-
-class AppController extends Controller {
-
-  Color consumedFromController;
-
-  @override
-  onInit(){
-    consumedFromController = GlobalState<ThemeContract>().current.backgroundColor;
-  }
-
-  @override
-  onClose(){}
-}
-
-class AppView extends View<AppController> {
-  AppView({required AppController controller}) : super(controller: controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        color: GlobalState<ThemeContract>().current.foregroundColor,
-        ...
-    );
-  }
-}
-```
-<br/><br/>
-<a name="theme-change"></a>
-
-## Changing themes
-To change the state of the GlobalState, you just need to update the corresponding property.
-
-app.dart
-```dart
-import 'package:flutter_view_controller/flutter_view_controller.dart';
-
-...
-
-class AppView extends View<AppController> {
-  AppView({required AppController controller}) : super(controller: controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        if(GlobalState<ThemeContract>().current is LightTheme){
-          GlobalState<ThemeContract>().current = DarkTheme();
-        }else{
-          GlobalState<ThemeContract>().current = LightTheme();
-        }
-      },
-      child: Container(
-        color: GlobalState<ThemeContract>().current.foregroundColor,
-        ...
-    );
-  }
-}
-```
-<br/><br/>
-<a name="theme-components"></a>
-
-## Segmenting themes components
-You can use as many GlobalStates as you want to do different things.
-
-main.dart
-```dart
-...
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    GlobalState<ThemeContract>().register(LightTheme());
-    GlobalState<FontContract>().register(ComicsFonts());
-    GlobalState<ShapeContract>().register(RoundedComponents());
-
-    ...
-    return MaterialApp(
-      ...
-    );
-  }
-}
-```
 <br/><br/><br/>
 <a name="size"></a>
-
+# ScreenSizer
 ![ScreenSize](https://raw.githubusercontent.com/guilhermetog/flutter_view_controller/main/assets/screensize.png)
 
 As a way to simplify the calculation of widget sizes, Flutter View Controller comes with a built-in property in its views. 
@@ -557,7 +404,7 @@ class AppView extends View<AppController> {
 
 In this example we built a Container with 55.2% of screen height and 10% of screen width.
 
-## Contribute
+# Contribute
 If you have some improvement or correction to make, please feel free to open an issue or pull request on the github project. All feedback are very welcome.
 
 

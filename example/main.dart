@@ -28,8 +28,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GlobalState<ThemeContract>().register(ThemeDark());
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AppView(controller: AppController()),
@@ -67,13 +65,11 @@ class AppController extends Controller {
   _changeToDark() {
     buttonDark.enable();
     buttonLight.disable();
-    GlobalState<ThemeContract>().current = ThemeDark();
   }
 
   _changeToLight() {
     buttonDark.disable();
     buttonLight.enable();
-    GlobalState<ThemeContract>().current = ThemeLight();
   }
 
   @override
@@ -81,13 +77,13 @@ class AppController extends Controller {
 }
 
 class AppView extends ViewOf<AppController> {
-  const AppView({super.key, required AppController controller}) : super(controller: controller);
+  AppView({super.key, required AppController controller})
+      : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: GlobalState<ThemeContract>().current.backgroundColor,
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -127,11 +123,11 @@ class IconButtonController extends Controller {
 }
 
 class IconButtonView extends ViewOf<IconButtonController> {
-  const IconButtonView({super.key, required IconButtonController controller}) : super(controller: controller);
+  IconButtonView({super.key, required IconButtonController controller})
+      : super(controller: controller);
 
   @override
   Widget build(BuildContext context) {
-    ThemeContract theme = GlobalState<ThemeContract>().current;
     return controller._isEnabled.show(
       (isEnabled) => GestureDetector(
         onTap: controller._click,
@@ -141,13 +137,12 @@ class IconButtonView extends ViewOf<IconButtonController> {
           margin: EdgeInsets.all(size.height(5)),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isEnabled ? theme.backgroundColor : theme.backgroundDisableColor,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                offset: const Offset(0, 2),
+                offset: Offset(0, 2),
                 blurRadius: 2,
                 spreadRadius: 4,
-                color: theme.foregroundColor.withOpacity(0.4),
+                color: Colors.black26,
               )
             ],
             borderRadius: BorderRadius.circular(size.height(10)),
@@ -155,7 +150,6 @@ class IconButtonView extends ViewOf<IconButtonController> {
           child: Icon(
             controller.icon,
             size: size.height(3),
-            color: theme.foregroundColor,
           ),
         ),
       ),
