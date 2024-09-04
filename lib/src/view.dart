@@ -53,12 +53,17 @@ abstract class Controller {
   final NotifierTicker _refresh = NotifierTicker();
   late BuildContext context;
   late String _viewType;
+  late String _controllerType;
   bool _alreadyInitialized = false;
   bool _alreadyReady = false;
 
   bool get readyCondition => true;
 
   Plug onReady = Plug();
+
+  Controller() {
+    _controllerType = runtimeType.toString();
+  }
 
   onInit();
   onUpdate(String? lastRouteName) {}
@@ -122,21 +127,18 @@ abstract class Controller {
 }
 
 class _ControllerRepository {
-  static final Map<Type, Controller> _controllers = {};
+  static final Map<String, Controller> _controllers = {};
 
   T register<T extends Controller>(T controller) {
-    if (_controllers.containsKey(T)) {
-      return _controllers[T] as T;
+    if (_controllers.containsKey(controller._controllerType)) {
+      return _controllers[controller._controllerType] as T;
     } else {
-      _controllers[T] = controller;
+      _controllers[controller._controllerType] = controller;
       return controller;
     }
   }
 
   void remove<T extends Controller>(T controller) {
-    if (_controllers.containsValue(controller)) {
-      _controllers
-          .removeWhere((key, value) => value.hashCode == controller.hashCode);
-    }
+    _controllers.removeWhere((key, value) => key == controller._controllerType);
   }
 }

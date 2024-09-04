@@ -169,3 +169,6 @@
 * REMOVED GlobalState SINCE IT ISN'T USED ANYMORE
 * UPDATE DEPENDENCIES VERSIONS
 * UPDATE DOCUMENTATION
+
+## 0.1.25
+* ADDED _controllerType PROPERTY in Controller for web routing compatibility
