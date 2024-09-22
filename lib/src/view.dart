@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
 import 'dart:async';
 
+import 'animation/global_ticker_provider.dart';
+
 abstract class ViewOf<T extends Controller> extends StatefulWidget {
   final T controller;
   final Sizer size;
@@ -43,7 +45,12 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
       _initialize(context);
       Widget w = widget.build(context);
       widget.controller._ready();
-      return w;
+
+      if (widget.controller._hasTicker) {
+        return GlobalTickerProviderWidget(child: w);
+      } else {
+        return w;
+      }
     });
   }
 }
@@ -56,6 +63,7 @@ abstract class Controller {
   late String _controllerType;
   bool _alreadyInitialized = false;
   bool _alreadyReady = false;
+  bool _hasTicker = false;
 
   bool get readyCondition => true;
 
@@ -122,6 +130,7 @@ abstract class Controller {
   }
 
   static T register<T extends Controller>(T controller) {
+    controller._hasTicker = true;
     return _ControllerRepository().register(controller);
   }
 }

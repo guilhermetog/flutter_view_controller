@@ -172,3 +172,9 @@
 
 ## 0.1.25
 * ADDED _controllerType PROPERTY in Controller for web routing compatibility
+
+## 0.1.26
+* REINTEGRATED Sizer FOR DEVELOPMENT FACILITIES
+* REINTEGRATED Plug FOR DEVELOPMENT FACILITIES
+* CREATED Anima class for integrated animations
+* CREATED Sizer.heightResponsible, Sizer.widthResponsible, Sizer.fraction(heights, widths) for breakpoints percentages widths and heights.

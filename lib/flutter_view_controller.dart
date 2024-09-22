@@ -1,7 +1,9 @@
 library flutter_view_controller;
 
-export 'src/notifier.dart';
-export 'package:plug/plug.dart';
-export 'package:sizer_plus/sizer_plus.dart';
+export 'src/animation/anima.dart';
+export 'src/data_transfer/notifier.dart';
+export 'src/data_transfer/plug.dart';
+export 'src/sizer/media_query.dart';
+export 'src/sizer/sizer.dart';
+export 'src/navigation/navigator_monitor.dart';
 export 'src/view.dart';
-export 'src/navigator_monitor.dart';
