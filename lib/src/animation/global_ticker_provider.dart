@@ -14,7 +14,7 @@ class GlobalTickerProviderWidget extends StatefulWidget {
 }
 
 class _GlobalTickerProviderWidgetState extends State<GlobalTickerProviderWidget>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   static _GlobalTickerProviderWidgetState? _instance;
 
   @override
