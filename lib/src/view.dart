@@ -100,7 +100,7 @@ abstract class Controller {
       if (readyCondition) {
         timer.cancel();
         FVCNavigatorMonitor().onFocus(_viewType, _update);
-        if (onReady.isConnected && !_alreadyReady) {
+        if (!_alreadyReady) {
           _alreadyReady = true;
           onReady();
         }

@@ -2,8 +2,6 @@ class Plug<T> {
   Function callback = () async {};
   bool _isConnected = false;
 
-  bool get isConnected => _isConnected;
-
   then(Function() f) {
     _isConnected = true;
     callback = f;
@@ -15,10 +13,12 @@ class Plug<T> {
   }
 
   call() async {
+    if (!_isConnected) return;
     await callback();
   }
 
   send(T arg) async {
+    if (!_isConnected) return;
     await callback(arg);
   }
 }
