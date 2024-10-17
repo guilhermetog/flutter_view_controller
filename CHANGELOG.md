@@ -179,3 +179,4 @@
 * CREATED Anima class for integrated animations
 * CREATED Sizer.heightResponsible, Sizer.widthResponsible, Sizer.fraction(heights, widths) for breakpoints percentages widths and heights.
 * INTERNALIZED Plug _isConnected BEHAVIOR
+* CREATED Positioner CLASS FOR GET COMPONENT POSITION

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_view_controller/flutter_view_controller.dart';
+import 'package:flutter_view_controller/src/positioner/positioner.dart';
 import 'dart:async';
 
 import 'animation/global_ticker_provider.dart';
@@ -61,11 +62,26 @@ abstract class Controller {
   late BuildContext context;
   late String _viewType;
   late String _controllerType;
+  Positioner? _positioner;
   bool _alreadyInitialized = false;
   bool _alreadyReady = false;
   bool _hasTicker = false;
 
   bool get readyCondition => true;
+  Positioner get position {
+    if (_positioner == null) {
+      Offset offset =
+          (context.findRenderObject() as RenderBox).localToGlobal(Offset.zero);
+      _positioner = Positioner(
+        position: offset,
+        size: Size(
+          size.width(100),
+          size.height(100),
+        ),
+      );
+    }
+    return _positioner!;
+  }
 
   Plug onReady = Plug();
 
