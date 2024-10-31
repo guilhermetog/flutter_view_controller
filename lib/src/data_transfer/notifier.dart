@@ -1,190 +1,94 @@
 import 'package:flutter/material.dart';
 
 class Notifier<T> {
-  late final NotifierMonitor<T> _notifierMonitor = NotifierMonitor(_notifier);
-  late ValueNotifier<T> _notifier;
+  T _value;
   final List<Function> _callbacks = [];
-  final List<Notifier<T>> _connectors = [];
-  final List<NotifierTicker> _tickers = [];
+  final ValueNotifier<bool> _ticker = ValueNotifier(false);
 
-  bool disposed = false;
+  Notifier(this._value);
 
-  T get value => _notifier.value;
-
-  int get connectors => _connectors.length;
-
-  set value(T value) {
-    if (disposed) {
-      _notifier = ValueNotifier(value);
-      disposed = false;
-    }
-    _notifier.value = value;
-    for (var callback in _callbacks) {
-      callback(_notifier.value);
-    }
-
-    for (var connector in _connectors) {
-      connector.value = value;
-    }
-
-    for (var ticker in _tickers) {
-      ticker.tick();
-    }
-  }
-
-  Notifier(T value) {
-    _notifier = ValueNotifier(value);
-  }
-
-  Widget show(Function(T) builder) {
-    return _notifierMonitor.show(builder);
-  }
-
-  listen(Function(T) callback) {
+  // Add a listener to the callbacks list
+  void listen(Function callback) {
     _callbacks.add(callback);
   }
 
-  unlisten(Function(T) callback) {
-    _callbacks.remove(callback);
+  // Notify all listeners
+  void notify() {
+    for (final callback in _callbacks) {
+      if (_value != null && callback is Function(T)) {
+        callback(_value);
+      } else {
+        callback();
+      }
+    }
+    _ticker.value = !_ticker.value;
   }
 
-  connect(Notifier<T> connector) {
-    if (_connectors.contains(connector)) return;
-    _connectors.add(connector);
+  List<Notifier> addAllNotifiers(List<Notifier> notifiers) {
+    for (final notifier in notifiers) {
+      addNotifier(notifier);
+    }
+    return notifiers;
   }
 
-  disconnect(Notifier<T> connector) {
-    _connectors.remove(connector);
+  // Allows adding another Notifier to listen for its changes
+  Notifier<Y> addNotifier<Y>(Notifier<Y> notifier) {
+    if (!notifier._callbacks.contains(notify)) {
+      notifier.listen(notify);
+    }
+
+    return notifier;
   }
 
-  disconnectAll() {
-    _connectors.clear();
+  // Removes a notifier's listener
+  void removeNotifier(Notifier notifier) {
+    notifier._callbacks.remove(notify);
   }
 
-  connectTicker(NotifierTicker ticker) {
-    _tickers.add(ticker);
-  }
-
-  disconnectTicker(NotifierTicker ticker) {
-    _tickers.remove(ticker);
-  }
-
-  disconnectAllTickers() {
-    _tickers.clear();
-  }
-
-  dispose() {
+  // Clear all listeners
+  void clearNotifiers() {
     _callbacks.clear();
-    _connectors.clear();
-    _notifier.dispose();
-    disposed = true;
-  }
-}
-
-class NotifierList<T> {
-  late final NotifierMonitor<List<T>> _notifiersMonitor = NotifierMonitor(_notifier);
-  late final ValueNotifier<List<T>> _notifier = ValueNotifier([]);
-  final List<Function> _callbacks = [];
-  final List<NotifierList<T>> _connectors = [];
-
-  get length => _notifier.value.length;
-
-  List<T> get value => _notifier.value;
-  set value(List<T> value) {
-    _notifier.value = value.toList();
-    for (var callback in _callbacks) {
-      callback(_notifier.value);
-    }
-
-    for (var connector in _connectors) {
-      connector.value = value;
-    }
   }
 
-  Widget show(Function(List<T>) builder) {
-    return _notifiersMonitor.show(builder);
-  }
-
-  add(T object) {
-    _notifier.value = [...(_notifier.value)..add(object)];
-  }
-
-  remove(T object) {
-    final list = [...(_notifier.value)..remove(object)];
-    _notifier.value = list;
-  }
-
-  clear() {
-    _notifier.value = [];
-  }
-
-  update() {
-    value = [...value];
-  }
-
-  listen(Function(List<T>) callback) {
-    _callbacks.add(callback);
-  }
-
-  connect(NotifierList<T> connector) {
-    _connectors.add(connector);
-  }
-
-  dispose() {
-    _callbacks.clear();
-    _connectors.clear();
-    _notifier.dispose();
-  }
-}
-
-class NotifierTicker {
-  late final NotifierMonitor<bool> _notifierMonitor = NotifierMonitor(_notifier);
-  final ValueNotifier<bool> _notifier = ValueNotifier(false);
-  final List<Function> _callbacks = [];
-  final List<NotifierTicker> _connectors = [];
-
-  tick() {
-    _notifier.value = !_notifier.value;
-
-    for (var callback in _callbacks) {
-      callback();
-    }
-
-    for (var connector in _connectors) {
-      connector.tick();
-    }
-  }
-
-  listen(Function(List) callback) {
-    _callbacks.add(callback);
-  }
-
-  connect(NotifierTicker connector) {
-    _connectors.add(connector);
-  }
-
-  Widget show(Function builder) {
-    return _notifierMonitor.show((value) => builder());
-  }
-
-  dispose() {
-    _callbacks.clear();
-    _notifier.dispose();
-  }
-}
-
-class NotifierMonitor<T> {
-  final List<Function(T)> _builderCallbacks = [];
-  final ValueNotifier<T> _notifier;
-
-  NotifierMonitor(this._notifier);
-
-  Widget show(Function(T) builder) {
-    _builderCallbacks.add(builder);
-    return ValueListenableBuilder<T>(
-      valueListenable: _notifier,
+  // Display the value using a widget builder
+  Widget show(Widget Function(T) builder) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: _ticker,
       builder: (context, value, child) {
-        return builder(value);
+        return builder(_value);
+      },
+    );
+  }
+
+  // Getter and setter for the value
+  T get value => _value;
+  set value(T newValue) {
+    _value = newValue;
+    notify();
+  }
+
+  T call([T? newValue]) {
+    if (newValue != null) {
+      _value = newValue;
+      notify();
+    }
+    return _value;
+  }
+}
+
+class NotifierView<T> extends StatelessWidget {
+  final Notifier<T> notifier;
+  final Widget Function(T) builder;
+
+  // ignore: use_key_in_widget_constructors
+  const NotifierView({required this.notifier, required this.builder});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: notifier._ticker,
+      builder: (context, value, child) {
+        return builder(notifier.value);
       },
     );
   }

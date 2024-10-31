@@ -7,9 +7,8 @@ import 'animation/global_ticker_provider.dart';
 
 abstract class ViewOf<T extends Controller> extends StatefulWidget {
   final T controller;
-  final Sizer size;
+  Sizer size;
 
-  // ignore: prefer_const_constructors_in_immutables
   ViewOf({
     super.key,
     required this.controller,
@@ -30,6 +29,7 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
       widget.controller._setContext(context);
       widget.controller._initialize();
     } else {
+      widget.controller._setSize(widget.size);
       widget.controller._setContext(context);
     }
   }
@@ -42,23 +42,25 @@ class _ViewOfState<T extends Controller> extends State<ViewOf<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.controller._refresh.show(() {
-      _initialize(context);
-      Widget w = widget.build(context);
-      widget.controller._ready();
+    return NotifierView(
+        notifier: widget.controller,
+        builder: (_) {
+          _initialize(context);
+          Widget w = widget.build(context);
+          widget.controller._ready();
 
-      if (widget.controller._hasTicker) {
-        return GlobalTickerProviderWidget(child: w);
-      } else {
-        return w;
-      }
-    });
+          if (widget.controller._hasTicker) {
+            return GlobalTickerProviderWidget(child: w);
+          } else {
+            return w;
+          }
+        });
   }
 }
 
-abstract class Controller {
+abstract class Controller extends Notifier {
+  List<Notifier> _props = [];
   late Sizer size;
-  final NotifierTicker _refresh = NotifierTicker();
   late BuildContext context;
   late String _viewType;
   late String _controllerType;
@@ -83,10 +85,13 @@ abstract class Controller {
     return _positioner!;
   }
 
+  List<Notifier> get props => _props;
+
   Plug onReady = Plug();
 
-  Controller() {
+  Controller() : super(null) {
     _controllerType = runtimeType.toString();
+    addAllNotifiers(props);
   }
 
   onInit();
@@ -102,6 +107,7 @@ abstract class Controller {
   }
 
   _setContext(context) {
+    _positioner = null;
     this.context = context;
     Sizer.calculateSize(context);
   }
@@ -136,13 +142,39 @@ abstract class Controller {
   }
 
   refresh() {
-    _refresh.tick();
+    notify();
   }
 
   reload() async {
     await onClose();
     await onInit();
     refresh();
+  }
+
+  addProps(List<Notifier> props) {
+    for (final prop in props) {
+      _props.add(addNotifier(prop));
+    }
+  }
+
+  removeProps(List<Notifier> props) {
+    for (final prop in props) {
+      _props.remove(prop);
+    }
+  }
+
+  clearProps() {
+    _props.clear();
+  }
+
+  afterBuild(Function callback) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
+      if (callback is Function(Duration)) {
+        callback(duration);
+      } else {
+        callback();
+      }
+    });
   }
 
   static T register<T extends Controller>(T controller) {
