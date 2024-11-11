@@ -120,11 +120,13 @@ abstract class Controller extends Notifier {
 
   _ready() {
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      if (_isReady && !_alreadyCalledReady) {
+      if (_isReady) {
         timer.cancel();
         FVCNavigatorMonitor().onFocus(_viewType, _update);
-        _alreadyCalledReady = true;
-        onReady();
+        if (_alreadyCalledReady) {
+          _alreadyCalledReady = true;
+          onReady();
+        }
       }
     });
   }
