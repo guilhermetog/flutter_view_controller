@@ -66,10 +66,10 @@ abstract class Controller extends Notifier {
   late String _controllerType;
   Positioner? _positioner;
   bool _alreadyInitialized = false;
-  bool _alreadyReady = false;
+  bool _alreadyCalledReady = false;
+  bool _isReady = false;
   bool _hasTicker = false;
 
-  bool get readyCondition => true;
   Positioner get position {
     if (_positioner == null) {
       Offset offset =
@@ -112,20 +112,19 @@ abstract class Controller extends Notifier {
     Sizer.calculateSize(context);
   }
 
-  _initialize() {
+  _initialize() async {
     _alreadyInitialized = true;
-    onInit();
+    await onInit();
+    _isReady = true;
   }
 
   _ready() {
     Timer.periodic(const Duration(milliseconds: 500), (timer) {
-      if (readyCondition) {
+      if (_isReady && !_alreadyCalledReady) {
         timer.cancel();
         FVCNavigatorMonitor().onFocus(_viewType, _update);
-        if (!_alreadyReady) {
-          _alreadyReady = true;
-          onReady();
-        }
+        _alreadyCalledReady = true;
+        onReady();
       }
     });
   }
