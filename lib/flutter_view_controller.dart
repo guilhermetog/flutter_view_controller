@@ -8,3 +8,4 @@ export 'src/sizer/sizer.dart';
 export 'src/positioner/positioner.dart';
 export 'src/navigation/navigator_monitor.dart';
 export 'src/view.dart';
+export 'src/ui_component.dart';
