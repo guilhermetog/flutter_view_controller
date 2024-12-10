@@ -172,3 +172,6 @@
 
 ## 0.1.25
 * ADDED _controllerType PROPERTY in Controller for web routing compatibility
+
+## 0.1.26
+* CREATED ui_component CLASS for new design system
