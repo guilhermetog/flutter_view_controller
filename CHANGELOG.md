@@ -181,3 +181,6 @@
 * INTERNALIZED Plug _isConnected BEHAVIOR
 * CREATED Positioner CLASS FOR GET COMPONENT POSITION
 * CREATED ui_component CLASS for new design system
+
+## 0.1.27
+* ADDED child PARAMETER IN LayoutUI

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 abstract class UIComponent {
+  late BuildContext context;
   late Size _size;
   VoidCallback? _onUpdate;
 
@@ -34,9 +35,10 @@ abstract class UIComponent {
 class LayoutUI extends StatefulWidget {
   final double? width;
   final double? height;
-  final UIComponent component;
+  final UIComponent child;
 
-  const LayoutUI(this.component, {this.width, this.height}) : super(key: null);
+  const LayoutUI({this.width, this.height, required this.child})
+      : super(key: null);
 
   @override
   _LayoutUIState createState() => _LayoutUIState();
@@ -46,7 +48,7 @@ class _LayoutUIState extends State<LayoutUI> {
   @override
   void initState() {
     super.initState();
-    widget.component.setUpdateCallback(_handleUpdate);
+    widget.child.setUpdateCallback(_handleUpdate);
   }
 
   void _handleUpdate() {
@@ -55,7 +57,7 @@ class _LayoutUIState extends State<LayoutUI> {
 
   @override
   void dispose() {
-    widget.component.dispose();
+    widget.child.dispose();
     super.dispose();
   }
 
@@ -69,9 +71,10 @@ class _LayoutUIState extends State<LayoutUI> {
       if (size.height > MediaQuery.of(context).size.height) {
         size = Size(size.width, MediaQuery.of(context).size.height);
       }
-      widget.component._size =
+      widget.child._size =
           Size(widget.width ?? size.width, widget.height ?? size.height);
-      return widget.component.build(context);
+      widget.child.context = context;
+      return widget.child.build(context);
     });
   }
 }
