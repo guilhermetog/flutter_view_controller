@@ -1,9 +1,86 @@
 import 'package:flutter/material.dart';
 
+import 'data_transfer/plug.dart';
+
+class AnimationData {
+  late AnimationStatus status;
+  late int frame;
+  late int totalFrames;
+  late Duration duration;
+
+  AnimationData(this.status, Duration? duration) {
+    this.duration = duration ?? const Duration(seconds: 2);
+    frame = 0;
+  }
+}
+
+class Animation {
+  late AnimationController _controller;
+  late AnimationData _data;
+
+  Plug<AnimationData> onFrame = Plug();
+  get controller => _controller;
+
+  set duration(Duration value) {
+    _controller.duration = value;
+    _data.duration = value;
+  }
+
+  Animation(this._controller,
+      {Duration duration = const Duration(seconds: 1)}) {
+    _data = AnimationData(_controller.status, duration);
+  }
+
+  play() {
+    sync();
+    _controller.forward();
+  }
+
+  pause() {
+    _controller.stop();
+    unsynced();
+  }
+
+  stop() {
+    _controller.reset();
+    unsynced();
+  }
+
+  reverse() {
+    sync();
+    _controller.reverse();
+  }
+
+  sync() {
+    _controller.addListener(_onControllerUpdate);
+    _controller.addStatusListener(_onControllerStatusUpdate);
+  }
+
+  unsynced() {
+    _controller.removeListener(_onControllerUpdate);
+    _controller.removeStatusListener(_onControllerStatusUpdate);
+  }
+
+  jumpTo(double value) {
+    _controller.value = value;
+  }
+
+  void _onControllerUpdate() {
+    onFrame.send(_data);
+  }
+
+  void _onControllerStatusUpdate(AnimationStatus status) {
+    _data.status = status;
+  }
+}
+
 abstract class UIComponent {
+  late Animation animation;
   late BuildContext context;
   late Size _size;
   VoidCallback? _onUpdate;
+
+  onMount() {}
 
   void setUpdateCallback(VoidCallback callback) {
     _onUpdate = callback;

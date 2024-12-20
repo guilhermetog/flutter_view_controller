@@ -184,3 +184,6 @@
 
 ## 0.1.27
 * ADDED child PARAMETER IN LayoutUI
+
+## 0.1.28
+* ADDED Animation CAPABILITY TO UIComponent
