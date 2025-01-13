@@ -75,9 +75,11 @@ class Animation {
 }
 
 abstract class UIComponent {
+  UniqueKey key = UniqueKey();
   late Animation animation;
   late BuildContext context;
   late Size _size;
+
   VoidCallback? _onUpdate;
 
   onMount() {}
@@ -94,14 +96,52 @@ abstract class UIComponent {
     _onUpdate?.call();
   }
 
+  resize(Size size) {
+    _size = size;
+  }
+
   Widget build(BuildContext context);
+
+  double screenWidth(double percentage) {
+    return MediaQuery.of(context).size.width * (percentage / 100);
+  }
 
   double width(double percentage) {
     return _size.width * (percentage / 100);
   }
 
+  double screenHeight(double percentage) {
+    return MediaQuery.of(context).size.height * (percentage / 100);
+  }
+
+  double safeHeight(double percentage) {
+    return MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom;
+  }
+
   double height(double percentage) {
     return _size.height * (percentage / 100);
+  }
+
+  double get top {
+    RenderBox? renderBox = context.findRenderObject() as RenderBox;
+    return renderBox.globalToLocal(Offset.zero).dy;
+  }
+
+  double get left {
+    RenderBox? renderBox = context.findRenderObject() as RenderBox;
+    return renderBox.globalToLocal(Offset.zero).dx;
+  }
+
+  double get bottom {
+    RenderBox? renderBox = context.findRenderObject() as RenderBox;
+    return renderBox.globalToLocal(Offset.zero).dy + renderBox.size.height;
+  }
+
+  double get right {
+    RenderBox? renderBox = context.findRenderObject() as RenderBox;
+    return renderBox.globalToLocal(Offset.zero).dx + renderBox.size.width;
   }
 
   double font(double percentage) {
@@ -114,11 +154,11 @@ class LayoutUI extends StatefulWidget {
   final double? height;
   final UIComponent child;
 
-  const LayoutUI({this.width, this.height, required this.child})
-      : super(key: null);
+  LayoutUI({this.width, this.height, required this.child})
+      : super(key: child.key);
 
   @override
-  _LayoutUIState createState() => _LayoutUIState();
+  State<LayoutUI> createState() => _LayoutUIState();
 }
 
 class _LayoutUIState extends State<LayoutUI> {
@@ -126,6 +166,8 @@ class _LayoutUIState extends State<LayoutUI> {
   void initState() {
     super.initState();
     widget.child.setUpdateCallback(_handleUpdate);
+    WidgetsBinding.instance
+        .addPostFrameCallback((time) => widget.child.onMount());
   }
 
   void _handleUpdate() {
