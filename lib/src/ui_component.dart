@@ -75,12 +75,16 @@ class Animation {
 }
 
 abstract class UIComponent {
-  UniqueKey key = UniqueKey();
+  late Key key;
   late Animation animation;
   late BuildContext context;
   late Size _size;
 
   VoidCallback? _onUpdate;
+
+  UIComponent() {
+    key = GlobalKey();
+  }
 
   onMount() {}
 
@@ -126,22 +130,22 @@ abstract class UIComponent {
 
   double get top {
     RenderBox? renderBox = context.findRenderObject() as RenderBox;
-    return renderBox.globalToLocal(Offset.zero).dy;
+    return renderBox.localToGlobal(Offset.zero).dy;
   }
 
   double get left {
     RenderBox? renderBox = context.findRenderObject() as RenderBox;
-    return renderBox.globalToLocal(Offset.zero).dx;
+    return renderBox.localToGlobal(Offset.zero).dx;
   }
 
   double get bottom {
     RenderBox? renderBox = context.findRenderObject() as RenderBox;
-    return renderBox.globalToLocal(Offset.zero).dy + renderBox.size.height;
+    return renderBox.localToGlobal(Offset.zero).dy + renderBox.size.height;
   }
 
   double get right {
     RenderBox? renderBox = context.findRenderObject() as RenderBox;
-    return renderBox.globalToLocal(Offset.zero).dx + renderBox.size.width;
+    return renderBox.localToGlobal(Offset.zero).dx + renderBox.size.width;
   }
 
   double font(double percentage) {
@@ -149,10 +153,11 @@ abstract class UIComponent {
   }
 }
 
+// ignore: must_be_immutable
 class LayoutUI extends StatefulWidget {
   final double? width;
   final double? height;
-  final UIComponent child;
+  UIComponent child;
 
   LayoutUI({this.width, this.height, required this.child})
       : super(key: child.key);
@@ -172,6 +177,14 @@ class _LayoutUIState extends State<LayoutUI> {
 
   void _handleUpdate() {
     setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(covariant LayoutUI oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget == oldWidget) {
+      widget.child = oldWidget.child;
+    }
   }
 
   @override
